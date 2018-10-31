@@ -1,0 +1,17 @@
+Type: Who
+PERSON
+
+Type: Where
+LOC
+GPE
+
+Type: When
+DATE
+TIME
+
+Type: How + ADJ
+ORDINAL
+PERCENT
+
+Type: Why
+Reasoning
