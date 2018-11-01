@@ -18,7 +18,7 @@ class SentenceDetails:
 
 
 nlp = spacy.load('en_core_web_sm')
-
+question_map = {}
 
 def input_file_contents():
     #    file = open(sys.argv[1], "r")
@@ -27,6 +27,26 @@ def input_file_contents():
     file_contents = file_contents.split('\n')
     #    print(file_contents)
     return file_contents
+
+def get_questions_map(file_name):
+    #    file = open(sys.argv[1], "r")
+    input_file = open(file_name, "r")
+    file_contents = input_file.read()
+    file_contents = file_contents.split('\n')
+    for index in range(len(file_contents)):
+        line = file_contents[index].split(' ')
+        if line[0] == "Type:":
+            question_type = line[1]
+            if len(line) > 2:
+                types = line[3].split(',')
+                expected_answer_type = file_contents[index + 1].split(',')
+                for type in types:
+                    question = question_type + ' ' + type
+                    question_map[question] = expected_answer_type
+            else:
+                expected_answer_type = file_contents[index+1].split(',')
+                question_map[question_type] = expected_answer_type
+
 
 def populate_dictionary(sentence_text, each_sentence_array, ner_for_sentence):
     details = SentenceDetails()
@@ -185,7 +205,8 @@ def fetch_file_data_and_process(input_file_data, output_stream):
 def main():
     input_file_data = input_file_contents()
     output_stream = open("output.txt", "w")
-    fetch_file_data_and_process(input_file_data, output_stream)
+    get_questions_map("question_types.txt")
+#    fetch_file_data_and_process(input_file_data, output_stream)
     output_stream.close()
 
 
