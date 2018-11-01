@@ -16,6 +16,7 @@ class SentenceDetails:
         self.count = ""
         self.ners = []
 
+question_map = {"who" : ['PERSON','ORGANIZATION'],"when" : ['DATE', 'TIME'], "where":['LOC', 'GPE'], "how much" : ['ORDINAL','PERCENT','MONEY'], "whose":['PERSON']}
 
 nlp = spacy.load('en_core_web_sm')
 question_map = {}
@@ -75,7 +76,7 @@ def get_story_data(story_data):
         ner_for_sentence = sentence.ents
 
         # Print each sentence of the paragraph
-        print(sentence.text)
+        # print(sentence.text)
         for word in sentence:
             word_obj = Word(word.text)
             # Add pos tagging
@@ -109,23 +110,36 @@ def extractpos(question):
 
 def matchOrSimilarity(array, word):
     for wordobject in array:
-        if wordobject.lemma == word.lemma:
-            print("Match")
+        if wordobject == word.lemma:
+            # print("Match")
             return True
             break
-        word1 = nlp(wordobject.lemma)
-        word2 = nlp(word.lemma)
-        if word1.similarity(word2) > 0.5 and wordobject.lemma == 'run':
-            print("Similar: ", word1.similarity(word2))
-            print(word1.text)
-            print(word2.text)
+        # Word similarity
+        # word1 = nlp(wordobject)
+        # word2 = nlp(word.lemma)
+        #  Similarity measure
+        # if word1.similarity(word2) > 0.5 and wordobject.lemma == 'run':
+        #     print("Similar: ", word1.similarity(word2))
+        #     print(word1.text)
+        #     print(word2.text)
 
+def checkNer(question, nerlist):
+    matches = []
+    # print(nerlist)
+    # print(question)
+    for key, valueslist in question_map.items():
+        # print("-------Key : ",key)
+        if key in question:
+            for value in valueslist:
+                if value in nerlist:
+                    matches.append(value)
+    return matches if (len(matches) > 0) else 0
 
 def overlap(question, sentence_details_array):
     question_lem_arr = []
     for word in question:
         if word.pos != "PUNCT":
-            question_lem_arr.append(word)
+            question_lem_arr.append(word.lemma)
     #result_arr = []
     # for sentence, taglist in sentence_dict.items():
     #     d = {}
@@ -134,16 +148,20 @@ def overlap(question, sentence_details_array):
     #     result_arr.append(d)
         # for k, v in d.items():
         #     print(k,v)
-    print(question)
+    # print(question)
     for record in sentence_details_array:
-        #for key, value in record.items():
-            #if key != "count":
-                print(record.sentence[0])
-                for word in record.sentence[1]:
-                    # if word.lemma in question_lem_arr:
-                    if matchOrSimilarity(question_lem_arr, word):
-                        record.count += 1
-                        print("Matched word", word.lemma)
+        
+        for word in record.sentence[1]:
+            if matchOrSimilarity(question_lem_arr, word):
+                record.count += 1
+                # print("Matched word", word.lemma)
+        nerlist = []
+        for each in record.ners:
+            nerlist.append(each.label_)
+        matches = checkNer(question_lem_arr, nerlist)
+        if (matches !=0 and record.count > 0) or (matches == 0 and record.count > 6):
+            print("Ans: ",record.sentence[0])
+
     return sentence_details_array
 
 
