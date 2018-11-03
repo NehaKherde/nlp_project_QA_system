@@ -235,12 +235,12 @@ def overlap(question, sentence_details_array, expected_answer_type, rootverb):
                 where_ans[score].append(record.sentence[0])
             else:
                 where_ans[score] = [record.sentence[0]]
-        if "when" in question_lem_arr:
-            score = whenqs(record.vount, matches, sentence_details_array)
-            if when_ans.get(score):
-                when_ans[score].append(record.sentence[0])
-            else:
-                when_ans[score] = [record.sentence[0]]
+        # if "when" in question_lem_arr:
+        #     # score = whenqs(record.vount, matches, sentence_details_array)
+        #     if when_ans.get(score):
+        #         when_ans[score].append(record.sentence[0])
+        #     else:
+        #         when_ans[score] = [record.sentence[0]]
         # print("Ans: ",record.sentence[0])
         # print(assignScore(matches, record.count, verbMatchCnt))
         # if (matches !=0 and record.count > 0) or (matches == 0 and record.count > 6):
