@@ -15,6 +15,7 @@ class SentenceDetails:
         self.sentence = []
         self.count = ""
         self.ners = []
+        self.score = 0
 
 question_map = {"how tall": ['QUANTITY'], "who" : ['PERSON','ORGANIZATION'],"when" : ['DATE', 'TIME'],
                 "where":['LOC', 'GPE'], "how much" : ['ORDINAL','PERCENT','MONEY'], "whose":['PERSON'],
@@ -224,8 +225,50 @@ def whereqs(overlapCount, matches, sentence_details_array):
     # print("NER Match: ", matches)
     return score
 
-# def whenqs()
+def whenqs(overlapCount, matches, sentence_details_array, question_lem_arr):
+    score = 0
+    if matches!=0:
+        score +=6
+        score += overlapCount*3
+    time_words = ['first', 'last', 'since', 'ago']
+    if 'the last' in question_lem_arr:
+        for word in time_words:
+            if word in sentence_details_array[0].sentence[1]:
+                score+=6
+                break
+    start_words = ['start', 'begin', 'since', 'year']
+    if 'start' in question_lem_arr or 'begin' in question_lem_arr:
+        for word in start_words:
+            if word in sentence_details_array[0].sentence[1]:
+                score+=6
+                break
+    return score
 
+def whyqs(sentence_details_array, question_lem_arr):
+    for index in range(0,len(sentence_details_array)):
+        record = sentence_details_array
+        record[index].count = 0
+        for word in record[index].sentence[1]:
+            if matchOrSimilarity(question_lem_arr, word):
+                record[index].count += 1
+        record[index].score = record[index].count*3
+
+    answer = None
+    max_score = 0    
+    for index in range(0,len(sentence_details_array)):
+        record = sentence_details_array
+        if index+1 !=len(sentence_details_array) and record[index+1].score > 0:
+            record[index].score +=3
+        if index-1 >= 0 and record[index-1].score > 0:    
+            record[index].score+=6
+        if 'want' in record[index].sentence[0]:
+            record[index].score+=6
+        if 'so' in record[index].sentence[0] or 'because' in record[index].sentence[0]:
+            record[index].score+=6
+        if record[index].score > max_score:
+            answer = record[index].sentence[0]
+            max_score = record[index].score    
+    return answer
 
 def overlap(question, sentence_details_array, expected_answer_type, rootverb, original_question_string):
     question_lem_arr = []
@@ -247,6 +290,11 @@ def overlap(question, sentence_details_array, expected_answer_type, rootverb, or
     who_ans = {}
     where_ans = {}
     when_ans = {}
+    if 'why' in question_lem_arr:
+        return whyqs(sentence_details_array, question_lem_arr)
+        
+
+
     for record in sentence_details_array:
         verbMatchCnt = 0
         record.count = 0
@@ -259,6 +307,7 @@ def overlap(question, sentence_details_array, expected_answer_type, rootverb, or
         nerlist = []
         for each in record.ners:
             nerlist.append(each.label_)
+
         if "where" in question_lem_arr:
             matches = checkNer(question_lem_arr, nerlist, expected_answer_type)
             score = whereqs(record.count, matches, sentence_details_array)
@@ -266,6 +315,7 @@ def overlap(question, sentence_details_array, expected_answer_type, rootverb, or
                 where_ans[score].append(record.sentence[0])
             else:
                 where_ans[score] = [record.sentence[0]]
+
         elif 'who' in question_lem_arr and record.count >= 1:
             #print("Ans: ",record.sentence[0])
             matches = checkNer_for_who(nerlist, record, original_question_string)
@@ -285,10 +335,24 @@ def overlap(question, sentence_details_array, expected_answer_type, rootverb, or
         #         when_ans[score].append(record.sentence[0])
         #     else:
         #         when_ans[score] = [record.sentence[0]]
+
+        if "when" in question_lem_arr:
+            matches = checkNer(question_lem_arr, nerlist, expected_answer_type)
+            score = whenqs(record.count, matches, sentence_details_array, question_lem_arr)
+            if when_ans.get(score):
+                when_ans[score].append(record.sentence[0])
+            else:
+                when_ans[score] = [record.sentence[0]]
+
+
         # print("Ans: ",record.sentence[0])
         # print(assignScore(matches, record.count, verbMatchCnt))
         # if (matches !=0 and record.count > 0) or (matches == 0 and record.count > 6):
         #     answer_list.append(record.sentence[0])            
+    if "when" in question_lem_arr and when_ans.items != []:
+        answer_list = "".join(sorted(when_ans.items(), reverse = True)[0][1][0])
+        # print(sorted(when_ans.items(), reverse = True)[:2])
+
     if "where" in question_lem_arr and where_ans.items != []:
         # print(sorted(where_ans.items(), reverse = True)[0][1])
         answer_list = "".join(sorted(where_ans.items(), reverse = True)[0][1][0])
@@ -332,7 +396,7 @@ def find_answer(qid, question, sentence_details_array, question_dict):
     # answer_list = overlap(question_arr, sentence_details_array, expected_answer_type, rootverb, )
     # question_dict[qid] = answer_list
 
-    # for record in answer_list:
+    # for record in answer_list:s
     #     print(record["sentence"][0])
     #     print(record["count"])
     # print("***********************************")
@@ -371,6 +435,29 @@ def populate_answer_dict(answers_data, answer_dict):
             ans = entry.split(": ")[1]
             answer_dict[qid] = ans
 
+def checkmatch(answer_found, answer):
+    answers = answer.split('|')
+    match = 0
+    for ans in answers:
+        if ans in answer_found:
+            match+=1
+    if match!=0:
+        return True
+    return False
+
+def check_accuracy(question_dict, answer_dict, accuracy):
+    for questionid, quest_ans in question_dict.items():
+        print("QID: ",questionid)
+        print("Question: ", quest_ans[0])
+        answer = answer_dict.get(questionid)
+        print("Answer expected:", answer)
+        answer_found = quest_ans[1]
+        print("Answer found: ", answer_found)
+        if checkmatch(answer_found, answer):
+            print("Correct Answer!!!!")
+            accuracy+=1
+        return accuracy    
+
 def fetch_file_data_and_process(input_file_data, output_stream):
     directory_path = input_file_data[0]
     for i in range(1, len(input_file_data)):
@@ -395,12 +482,18 @@ def fetch_file_data_and_process(input_file_data, output_stream):
         answers_data = open(filename_path_answers, "r").read()
         populate_answer_dict(answers_data, answer_dict)
         accuracy_count = 0
-        for question, answer_list in question_dict.items():
-            print("***********************************")
-            print(question)
-            print("Question: ", answer_list[0])
-            print("Actual answer:", answer_dict.get(question))
-            print("Answer Found:", answer_list[1])
+        accuracy_count = check_accuracy(question_dict, answer_dict, accuracy_count)
+        print("***********************************")
+        print("Accuracy_count:", accuracy_count)
+        print("Total qs:", len(question_dict.items()))
+        print("Percentage accuracy: ", accuracy_count/len(question_dict.items()))
+        print("***********************************")
+        # for question, answer_list in question_dict.items():
+        #     print("***********************************")
+        #     print(question)
+        #     print("Question: ", answer_list[0])
+        #     print("Actual answer:", answer_dict.get(question))
+        #     print("Answer Found:", answer_list[1])
             # for answer in answer_list:
             #     if answer_dict.get(question) in answer:
             #         accuracy_count +=1
