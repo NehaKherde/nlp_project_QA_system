@@ -195,6 +195,8 @@ def whereqs(overlapCount, matches, sentence_details_array):
     # print("NER Match: ", matches)
     return score
 
+# def whenqs()
+
 
 def overlap(question, sentence_details_array, expected_answer_type, rootverb):
     question_lem_arr = []
@@ -213,6 +215,7 @@ def overlap(question, sentence_details_array, expected_answer_type, rootverb):
     # print(question)
     verbMatchCnt = 0
     where_ans = {}
+    when_ans = {}
     for record in sentence_details_array:
         record.count = 0
         for word in record.sentence[1]:
@@ -232,7 +235,12 @@ def overlap(question, sentence_details_array, expected_answer_type, rootverb):
                 where_ans[score].append(record.sentence[0])
             else:
                 where_ans[score] = [record.sentence[0]]
-            
+        if "when" in question_lem_arr:
+            score = whenqs(record.vount, matches, sentence_details_array)
+            if when_ans.get(score):
+                when_ans[score].append(record.sentence[0])
+            else:
+                when_ans[score] = [record.sentence[0]]
         # print("Ans: ",record.sentence[0])
         # print(assignScore(matches, record.count, verbMatchCnt))
         # if (matches !=0 and record.count > 0) or (matches == 0 and record.count > 6):
@@ -257,9 +265,9 @@ def find_answer(qid, question, sentence_details_array, question_dict):
     # print("Root:", rootverb)
     answer_list = overlap(question_arr, sentence_details_array, expected_answer_type, rootverb)
     if answer_list != "":
-        question_dict[qid] = answer_list
+        question_dict[qid] = [question, answer_list]
     else:
-        question_dict[qid] = "No answer found"
+        question_dict[qid] = [question, "No answer found"]
     # for record in answer_list:
     #     print(record["sentence"][0])
     #     print(record["count"])
@@ -326,8 +334,9 @@ def fetch_file_data_and_process(input_file_data, output_stream):
         for question, answer_list in question_dict.items():
             print("***********************************")
             print(question)
+            print("Question: ", answer_list[0])
             print("Actual answer:", answer_dict.get(question))
-            print("Answer Found:", answer_list)
+            print("Answer Found:", answer_list[1])
             # for answer in answer_list:
             #     if answer_dict.get(question) in answer:
             #         accuracy_count +=1
