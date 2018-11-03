@@ -139,7 +139,7 @@ def matchOrSimilarity(array, word):
         if wordobject == word.lemma:
             # print("Match")
             return True
-            break
+
         # Word similarity
         # word1 = nlp(wordobject)
         # word2 = nlp(word.lemma)
@@ -149,12 +149,41 @@ def matchOrSimilarity(array, word):
         #     print(word1.text)
         #     print(word2.text)
 
+def checkNer_for_who(sent_nerlist, sentence_record, original_question_string):
+    match_count = 0
+    question_ners = nlp(original_question_string).ents
+    question_ner_list = []
+
+    for each in question_ners:
+        question_ner_list.append(each.label_)
+
+    # if len(question_ner_list) == 1 and "PERSON" in question_ner_list:
+    #     if
+    if 'PERSON' not in question_ner_list:
+        if 'PERSON' in sent_nerlist or 'FAC' in sent_nerlist:
+            match_count += 6
+        if 'name' in sentence_record.sentence[0]:
+            match_count += 4
+    elif 'ORG' not in question_ner_list:
+        if 'ORG' in sent_nerlist:
+            match_count += 6
+        if 'name' in sentence_record.sentence[0]:
+            match_count += 4
+
+    #check if NAME or ORG is present in sentence
+    for val in sent_nerlist:
+        if 'PERSON' == val or 'ORG' == val:
+            match_count += 4
+            break
+    return match_count
+
+
 def checkNer(question, nerlist, expected_answer_type):
     matches = []
     # print(nerlist)
     # print(question)
 
-    # check if ner list and expected_answer_type have anything in common
+#    check if ner list and expected_answer_type have anything in common
     for question_key, expected_answer_list in expected_answer_type.items():
         for answer_type in expected_answer_list:
             for ner in nerlist:
@@ -198,9 +227,10 @@ def whereqs(overlapCount, matches, sentence_details_array):
 # def whenqs()
 
 
-def overlap(question, sentence_details_array, expected_answer_type, rootverb):
+def overlap(question, sentence_details_array, expected_answer_type, rootverb, original_question_string):
     question_lem_arr = []
     answer_list = ""
+
     for word in question:
         if word.pos != "PUNCT":
             question_lem_arr.append(word.lemma)
@@ -213,28 +243,42 @@ def overlap(question, sentence_details_array, expected_answer_type, rootverb):
         # for k, v in d.items():
         #     print(k,v)
     # print(question)
-    verbMatchCnt = 0
+
+    who_ans = {}
     where_ans = {}
     when_ans = {}
     for record in sentence_details_array:
+        verbMatchCnt = 0
         record.count = 0
         for word in record.sentence[1]:
             if matchOrSimilarity(question_lem_arr, word):
                 record.count += 1
                 # print("Matched word", word.lemma)
             if word.lemma == rootverb:
-                verbMatchCnt +=1
+                verbMatchCnt += 1
         nerlist = []
         for each in record.ners:
             nerlist.append(each.label_)
-        matches = checkNer(question_lem_arr, nerlist, expected_answer_type)
         if "where" in question_lem_arr:
-            # print("Ans: ",record.sentence[0])  
+            matches = checkNer(question_lem_arr, nerlist, expected_answer_type)
             score = whereqs(record.count, matches, sentence_details_array)
             if where_ans.get(score):
                 where_ans[score].append(record.sentence[0])
             else:
                 where_ans[score] = [record.sentence[0]]
+        elif 'who' in question_lem_arr and record.count >= 1:
+            #print("Ans: ",record.sentence[0])
+            matches = checkNer_for_who(nerlist, record, original_question_string)
+            verbMatchCnt = verbMatchCnt*5
+            record_count = record.count * 3
+            final_count = matches + record_count + verbMatchCnt
+
+            if who_ans.get(final_count):
+                who_ans[final_count].append(record.sentence[0])
+            else:
+                who_ans[final_count] = [record.sentence[0]]
+        if 'who' in question_lem_arr and record.count >= 1 and who_ans.items != []:
+            answer_list = "".join(sorted(who_ans.items(), reverse=True)[0][1][0])
         # if "when" in question_lem_arr:
         #     # score = whenqs(record.vount, matches, sentence_details_array)
         #     if when_ans.get(score):
@@ -248,7 +292,22 @@ def overlap(question, sentence_details_array, expected_answer_type, rootverb):
     if "where" in question_lem_arr and where_ans.items != []:
         # print(sorted(where_ans.items(), reverse = True)[0][1])
         answer_list = "".join(sorted(where_ans.items(), reverse = True)[0][1][0])
+
         # print(sorted(where_ans.items(), reverse = True)[:2])
+
+
+            #print("SCORE: ", final_count)
+
+        # else:
+        #     matches = checkNer(question_lem_arr, nerlist, expected_answer_type)
+
+        #matches = checkNer(question_lem_arr, nerlist, expected_answer_type)
+        #print(assignScore(matches, record.count, verbMatchCnt))
+
+
+        #if (matches !=0 and record.count > 0) or (matches == 0 and record.count > 6):
+         #   answer_list.append(record.sentence[0])
+    #print(answer_list)
     return answer_list
 
 
@@ -256,6 +315,7 @@ def find_answer(qid, question, sentence_details_array, question_dict):
     # print(qid)
     # print(question)
     question = question.split(":")
+    original_question = question[1]
     question = question[1].strip()
     # print(question)
     subject, dobject, idobject, rootverb, question_arr, expected_answer_type = extractpos(question)
@@ -263,11 +323,15 @@ def find_answer(qid, question, sentence_details_array, question_dict):
     # print("Direct Object:", dobject)
     # print("Indirect Object:", idobject)
     # print("Root:", rootverb)
-    answer_list = overlap(question_arr, sentence_details_array, expected_answer_type, rootverb)
+    answer_list = overlap(question_arr, sentence_details_array, expected_answer_type, rootverb, original_question)
     if answer_list != "":
         question_dict[qid] = [question, answer_list]
     else:
         question_dict[qid] = [question, "No answer found"]
+
+    # answer_list = overlap(question_arr, sentence_details_array, expected_answer_type, rootverb, )
+    # question_dict[qid] = answer_list
+
     # for record in answer_list:
     #     print(record["sentence"][0])
     #     print(record["count"])
