@@ -78,13 +78,15 @@ def get_story_data(story_data):
 
         # Print each sentence of the paragraph
         # print(sentence.text)
+
         for word in sentence:
-            word_obj = Word(word.text)
-            # Add pos tagging
-            word_obj.pos = word.pos_
-            # Add lemmatization
-            word_obj.lemma = word.lemma_
-            each_sentence_array.append(word_obj)
+            if word.is_stop == False:
+                word_obj = Word(word.text)
+                # Add pos tagging
+                word_obj.pos = word.pos_
+                # Add lemmatization
+                word_obj.lemma = word.lemma_
+                each_sentence_array.append(word_obj)
 
         #dictionary[sentence.text] = each_sentence_array
         sentence_details = populate_dictionary(sentence.text, each_sentence_array, ner_for_sentence)
@@ -96,7 +98,6 @@ def get_story_data(story_data):
 def extractpos(question):
     question_arr = []
     question_sentence = nlp(question)
-
     expected_answer_type = {}
     # fetch the kind of answer the question is expecting before dropping the stop words and maintain a dictionary of those
     # check if question map data is present in the question
@@ -105,7 +106,22 @@ def extractpos(question):
         if question_key in lower_case_question:
             expected_answer_type[question_key] = expected_value
 
+    subject = None
+    indirect_object = None
+    direct_object = None
+    rootverb = None
+
     for word in question_sentence:
+        if word.dep_ == "nsubj":
+            subject = word.orth_
+        #iobj for indirect object
+        if word.dep_ == "iobj":
+            indirect_object = word.orth_
+        #dobj for direct object
+        if word.dep_ == "dobj":
+            direct_object = word.orth_
+        if word.dep_ == "ROOT":
+            rootverb = word.lemma_
         if word.text != '?' and (word.is_stop == False):
             # or (word.is_stop == True and word.pos_ == "VERB"):
             word_obj = Word(word.text)
@@ -114,7 +130,8 @@ def extractpos(question):
             # Add lemmatization
             word_obj.lemma = word.lemma_
             question_arr.append(word_obj)
-    return question_arr, expected_answer_type
+    return subject, direct_object, indirect_object, rootverb, question_arr, expected_answer_type
+
 
 
 def matchOrSimilarity(array, word):
@@ -138,8 +155,8 @@ def checkNer(question, nerlist, expected_answer_type):
     # print(question)
 
     # check if ner list and expected_answer_type have anything in common
-    for question_key, expected_ansewer_list in expected_answer_type.items():
-        for answer_type in expected_ansewer_list:
+    for question_key, expected_answer_list in expected_answer_type.items():
+        for answer_type in expected_answer_list:
             for ner in nerlist:
                 if ner == answer_type:
                     matches.append(ner)
@@ -152,7 +169,14 @@ def checkNer(question, nerlist, expected_answer_type):
     #                 matches.append(value)
     return matches if (len(matches) > 0) else 0
 
-def overlap(question, sentence_details_array, expected_answer_type):
+def assignScore(matches, overlapCount, verbMatchCnt):
+    score = 0
+    if matches!=0:
+        score += len(matches)*6
+    score += overlapCount*3
+    score += verbMatchCnt*6
+    return score
+def overlap(question, sentence_details_array, expected_answer_type, rootverb):
     question_lem_arr = []
     answer_list = []
     for word in question:
@@ -167,30 +191,37 @@ def overlap(question, sentence_details_array, expected_answer_type):
         # for k, v in d.items():
         #     print(k,v)
     # print(question)
+    verbMatchCnt = 0
     for record in sentence_details_array:
         for word in record.sentence[1]:
             if matchOrSimilarity(question_lem_arr, word):
                 record.count += 1
                 # print("Matched word", word.lemma)
+            if word.lemma == rootverb:
+                verbMatchCnt +=1
         nerlist = []
         for each in record.ners:
             nerlist.append(each.label_)
         matches = checkNer(question_lem_arr, nerlist, expected_answer_type)
+        print("Ans: ",record.sentence[0])
+        print(assignScore(matches, record.count, verbMatchCnt))
         if (matches !=0 and record.count > 0) or (matches == 0 and record.count > 6):
-            answer_list.append(record.sentence[0])
-            # print("Ans: ",record.sentence[0])
-
+            answer_list.append(record.sentence[0])            
     return answer_list
 
 
 def find_answer(qid, question, sentence_details_array, question_dict):
-    # print(qid)
-    # print(question)
+    print(qid)
+    print(question)
     question = question.split(":")
     question = question[1].strip()
-
-    question_arr, expected_answer_type = extractpos(question)
-    answer_list = overlap(question_arr, sentence_details_array, expected_answer_type)
+    # print(question)
+    subject, dobject, idobject, rootverb, question_arr, expected_answer_type = extractpos(question)
+    # print("Subject:", subject)
+    # print("Direct Object:", dobject)
+    # print("Indirect Object:", idobject)
+    # print("Root:", rootverb)
+    answer_list = overlap(question_arr, sentence_details_array, expected_answer_type, rootverb)
     question_dict[qid] = answer_list
     # for record in answer_list:
     #     print(record["sentence"][0])
@@ -255,17 +286,17 @@ def fetch_file_data_and_process(input_file_data, output_stream):
         answers_data = open(filename_path_answers, "r").read()
         populate_answer_dict(answers_data, answer_dict)
         accuracy_count = 0
-        for question, answer_list in question_dict.items():
-            print("***********************************")
-            print(question)
-            print("Actual answer:", answer_dict.get(question))
-            for answer in answer_list:
-                if answer_dict.get(question) in answer:
-                    accuracy_count +=1
-                print("Ans:  ",answer)
-        print("**********************************************************************")
-        print("Accuracy:", accuracy_count)
-        print("**********************************************************************")
+        # for question, answer_list in question_dict.items():
+        #     print("***********************************")
+        #     print(question)
+        #     print("Actual answer:", answer_dict.get(question))
+        #     for answer in answer_list:
+        #         if answer_dict.get(question) in answer:
+        #             accuracy_count +=1
+        #         print("Ans:  ",answer)
+        # print("**********************************************************************")
+        # print("Accuracy:", accuracy_count)
+        # print("**********************************************************************")
         
             
 def main():
