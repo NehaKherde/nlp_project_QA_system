@@ -16,10 +16,8 @@ class SentenceDetails:
         self.count = ""
         self.ners = []
 
-question_map = {"who" : ['PERSON','ORGANIZATION'],"when" : ['DATE', 'TIME'], "where":['LOC', 'GPE'], "how much" : ['ORDINAL','PERCENT','MONEY'], "whose":['PERSON']}
-
+question_map = {"who" : ['PERSON','ORGANIZATION'],"when" : ['DATE', 'TIME'], "where":['LOC', 'GPE'], "how much" : ['ORDINAL','PERCENT','MONEY'], "whose":['PERSON'], "how big": ['ORDINAL', 'QUANTITY']}
 nlp = spacy.load('en_core_web_sm')
-question_map = {}
 
 def input_file_contents():
     #    file = open(sys.argv[1], "r")
@@ -89,7 +87,6 @@ def get_story_data(story_data):
         sentence_details = populate_dictionary(sentence.text, each_sentence_array, ner_for_sentence)
         result_array.append(sentence_details)
         story_array.append(each_sentence_array)
-
     return story_array, result_array
 
 
@@ -137,6 +134,7 @@ def checkNer(question, nerlist):
 
 def overlap(question, sentence_details_array):
     question_lem_arr = []
+    answer_list = []
     for word in question:
         if word.pos != "PUNCT":
             question_lem_arr.append(word.lemma)
@@ -150,7 +148,6 @@ def overlap(question, sentence_details_array):
         #     print(k,v)
     # print(question)
     for record in sentence_details_array:
-        
         for word in record.sentence[1]:
             if matchOrSimilarity(question_lem_arr, word):
                 record.count += 1
@@ -160,22 +157,25 @@ def overlap(question, sentence_details_array):
             nerlist.append(each.label_)
         matches = checkNer(question_lem_arr, nerlist)
         if (matches !=0 and record.count > 0) or (matches == 0 and record.count > 6):
-            print("Ans: ",record.sentence[0])
+            answer_list.append(record.sentence[0])
+            # print("Ans: ",record.sentence[0])
 
-    return sentence_details_array
+    return answer_list
 
 
-def find_answer(question, sentence_details_array):
-    print("***********************************")
-    print(question)
+def find_answer(qid, question, sentence_details_array, question_dict):
+    # print(qid)
+    # print(question)
     question = question.split(":")
     question = question[1].strip()
+
     question_arr = extractpos(question)
-    count_sentence = overlap(question_arr, sentence_details_array)
-    # for record in count_sentence:
+    answer_list = overlap(question_arr, sentence_details_array)
+    question_dict[qid] = answer_list
+    # for record in answer_list:
     #     print(record["sentence"][0])
     #     print(record["count"])
-    print("***********************************")
+    # print("***********************************")
     # for token in question_arr:
     #     print(token.word_name, token.lemma, token.pos)
     #     print(" ")
@@ -184,19 +184,32 @@ def find_answer(question, sentence_details_array):
     return "\n" + header + answer
 
 
-def process_question(question_data, output_stream, sentence_details_array):
+def process_question(question_data, output_stream, sentence_details_array, question_dict):
     newline = "\n"
     question_id = "QuestionID"
     question = "Question:"
     question_data = question_data.split(newline)
+    qid = None
     for each in question_data:
         if question_id in each:
+            qid = each.split(": ")[1]
             output_stream.write(each)
         if question in each:
-            answer = find_answer(each, sentence_details_array)
+            answer = find_answer(qid, each, sentence_details_array, question_dict)
             output_stream.write(answer)
             output_stream.write(newline + newline)
 
+def populate_answer_dict(answers_data, answer_dict):
+    newline = "\n"
+    question_id = "QuestionID"
+    answer = "Answer:"
+    answers_data = answers_data.split(newline)
+    for entry in answers_data:
+        if question_id in entry:
+            qid = entry.split(": ")[1]
+        if answer in entry:
+            ans = entry.split(": ")[1]
+            answer_dict[qid] = ans
 
 def fetch_file_data_and_process(input_file_data, output_stream):
     directory_path = input_file_data[0]
@@ -211,20 +224,35 @@ def fetch_file_data_and_process(input_file_data, output_stream):
         story, sentence_details_array = get_story_data(story_data)
 
         # ------ QUESTIONS ------
+        question_dict = {}
         filename_path_questions = filename_path + ".questions"
         question_data = open(filename_path_questions, "r").read()
-        process_question(question_data, output_stream, sentence_details_array)
-
+        process_question(question_data, output_stream, sentence_details_array, question_dict)
+    
         # ------ ANSWERS ------
+        answer_dict = {}
         filename_path_answers = filename_path + ".answers"
         answers_data = open(filename_path_answers, "r").read()
-
-
+        populate_answer_dict(answers_data, answer_dict)
+        accuracy_count = 0
+        for question, answer_list in question_dict.items():
+            print("***********************************")
+            print(question)
+            print("Actual answer:", answer_dict.get(question))
+            for answer in answer_list:
+                if answer_dict.get(question) in answer:
+                    accuracy_count +=1
+                print("Ans:  ",answer)
+        print("**********************************************************************")
+        print("Accuracy:", accuracy_count)
+        print("**********************************************************************")
+        
+            
 def main():
     input_file_data = input_file_contents()
     output_stream = open("output.txt", "w")
     get_questions_map("question_types.txt")
-#    fetch_file_data_and_process(input_file_data, output_stream)
+    fetch_file_data_and_process(input_file_data, output_stream)
     output_stream.close()
 
 
