@@ -16,8 +16,11 @@ class SentenceDetails:
         self.count = ""
         self.ners = []
 
-question_map = {"who" : ['PERSON','ORGANIZATION'],"when" : ['DATE', 'TIME'], "where":['LOC', 'GPE'], "how much" : ['ORDINAL','PERCENT','MONEY'], "whose":['PERSON'], "how big": ['ORDINAL', 'QUANTITY']}
+question_map = {"how tall": ['QUANTITY'], "who" : ['PERSON','ORGANIZATION'],"when" : ['DATE', 'TIME'],
+                "where":['LOC', 'GPE'], "how much" : ['ORDINAL','PERCENT','MONEY'], "whose":['PERSON'],
+                "how big": ['ORDINAL', 'QUANTITY']}
 nlp = spacy.load('en_core_web_sm')
+# question_map = {}
 
 def input_file_contents():
     #    file = open(sys.argv[1], "r")
@@ -93,6 +96,15 @@ def get_story_data(story_data):
 def extractpos(question):
     question_arr = []
     question_sentence = nlp(question)
+
+    expected_answer_type = {}
+    # fetch the kind of answer the question is expecting before dropping the stop words and maintain a dictionary of those
+    # check if question map data is present in the question
+    for question_key, expected_value in question_map.items():
+        lower_case_question = question.lower()
+        if question_key in lower_case_question:
+            expected_answer_type[question_key] = expected_value
+
     for word in question_sentence:
         if word.text != '?' and (word.is_stop == False):
             # or (word.is_stop == True and word.pos_ == "VERB"):
@@ -102,7 +114,7 @@ def extractpos(question):
             # Add lemmatization
             word_obj.lemma = word.lemma_
             question_arr.append(word_obj)
-    return question_arr
+    return question_arr, expected_answer_type
 
 
 def matchOrSimilarity(array, word):
@@ -120,19 +132,27 @@ def matchOrSimilarity(array, word):
         #     print(word1.text)
         #     print(word2.text)
 
-def checkNer(question, nerlist):
+def checkNer(question, nerlist, expected_answer_type):
     matches = []
     # print(nerlist)
     # print(question)
-    for key, valueslist in question_map.items():
-        # print("-------Key : ",key)
-        if key in question:
-            for value in valueslist:
-                if value in nerlist:
-                    matches.append(value)
+
+    # check if ner list and expected_answer_type have anything in common
+    for question_key, expected_ansewer_list in expected_answer_type.items():
+        for answer_type in expected_ansewer_list:
+            for ner in nerlist:
+                if ner == answer_type:
+                    matches.append(ner)
+
+    # for key, valueslist in question_map.items():
+    #     # print("-------Key : ",key)
+    #     if key in question:
+    #         for value in valueslist:
+    #             if value in nerlist:
+    #                 matches.append(value)
     return matches if (len(matches) > 0) else 0
 
-def overlap(question, sentence_details_array):
+def overlap(question, sentence_details_array, expected_answer_type):
     question_lem_arr = []
     answer_list = []
     for word in question:
@@ -155,7 +175,7 @@ def overlap(question, sentence_details_array):
         nerlist = []
         for each in record.ners:
             nerlist.append(each.label_)
-        matches = checkNer(question_lem_arr, nerlist)
+        matches = checkNer(question_lem_arr, nerlist, expected_answer_type)
         if (matches !=0 and record.count > 0) or (matches == 0 and record.count > 6):
             answer_list.append(record.sentence[0])
             # print("Ans: ",record.sentence[0])
@@ -169,8 +189,8 @@ def find_answer(qid, question, sentence_details_array, question_dict):
     question = question.split(":")
     question = question[1].strip()
 
-    question_arr = extractpos(question)
-    answer_list = overlap(question_arr, sentence_details_array)
+    question_arr, expected_answer_type = extractpos(question)
+    answer_list = overlap(question_arr, sentence_details_array, expected_answer_type)
     question_dict[qid] = answer_list
     # for record in answer_list:
     #     print(record["sentence"][0])
@@ -251,7 +271,7 @@ def fetch_file_data_and_process(input_file_data, output_stream):
 def main():
     input_file_data = input_file_contents()
     output_stream = open("output.txt", "w")
-    get_questions_map("question_types.txt")
+    # get_questions_map("question_types.txt")
     fetch_file_data_and_process(input_file_data, output_stream)
     output_stream.close()
 
