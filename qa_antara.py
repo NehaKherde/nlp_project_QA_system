@@ -267,6 +267,15 @@ def whyqs(sentence_details_array, question_lem_arr):
         if record[index].score > max_score:
             answer = record[index].sentence[0]
             max_score = record[index].score    
+    if 'so' in answer:
+        index = answer.index('so')
+        return answer[index:]
+    if 'because' in answer:
+        index = answer.index('because')
+        return answer[index:] 
+    if 'want' in answer:
+        index = answer.index('want')
+        return answer[index:]
     return answer
 
 def whatqs(sentence_details_array, question_lem_arr, original_question_string):
@@ -299,6 +308,89 @@ def whatqs(sentence_details_array, question_lem_arr, original_question_string):
         # print(record[index].sentence[0])
         # print(record[index].score)
 
+def find_answer_from_sentence(answer_list, type):
+    answer_substring = ""
+    sent = nlp(answer_list)
+
+    # print("Hey")
+    # if type == "where":
+    #     location_preps = ["in", "at", "near", "inside"]
+    #     found_index = -1
+    #     ner_list = nlp(answer_list).ents
+    #     found_flag = False
+    #     for location_prep in location_preps:
+    #         sentence_array = answer_list.split(' ')
+    #         if location_prep in sentence_array:
+    #             found_index = answer_list.index(" " + location_prep + " ")
+    #             found_flag = True
+    #             break
+
+    #     if found_flag:
+    #         for each in ner_list:
+    #             if (each.label_ == 'GPE' or each.label_ == 'LOC') and each.start_char >= found_index:
+    #                 answer_substring = answer_substring + ' ' + each.text
+    #     else:
+    #         answer_substring = answer_list
+    #     return answer_substring
+    if type == "where":
+        location_preps = ["in", "at", "near", "inside"]
+
+        found_index = -1
+        ner_list = sent.ents
+        found_flag = False
+        min_index = 10000000
+        for location_prep in location_preps:
+            if (' ' + location_prep + ' ') in answer_list:
+                found_index = answer_list.index(" " + location_prep + " ")
+                if found_index < min_index:
+                    min_index = found_index
+                found_flag = True
+        if found_flag:
+            for each in ner_list:
+                if (each.label_ == 'GPE' or each.label_ == 'LOC') and each.start_char >= min_index:
+                    answer_substring = answer_substring + ' ' + each.text
+            #answer_substring = answer_list[min_index+1:]
+                # if (each.label_ == 'GPE' or each.label_ == 'LOC') and each.start_char >= found_index:
+                #     answer_substring = answer_substring + ' ' + each.text
+        else:
+            answer_substring = answer_list
+        return answer_substring
+
+    # if type == "where":
+    #     location_preps = ["in", "at", "near", "inside"]
+
+    #     found_index = -1
+    #     ner_list = sent.ents
+    #     found_flag = False
+    #     min_index = 10000000
+    #     for location_prep in location_preps:
+    #         if (' ' + location_prep + ' ') in answer_list:
+    #             found_index = answer_list.index(" " + location_prep + " ")
+    #             if found_index < min_index:
+    #                 min_index = found_index
+    #             found_flag = True
+    #     if found_flag:
+    #         answer_substring = answer_list[min_index+1:]
+    #             # if (each.label_ == 'GPE' or each.label_ == 'LOC') and each.start_char >= found_index:
+    #             #     answer_substring = answer_substring + ' ' + each.text
+    #     else:
+    #         answer_substring = answer_list
+    #     return answer_substring
+
+    elif type == "when":
+        # print("Orig:", answer_list)
+        preps = ["in","on"]
+        found_index = -1
+        ner_list = nlp(answer_list).ents
+        added_flag = False
+        for each in ner_list:
+            if (each.label_ == 'DATE' or each.label_ == 'TIME'):
+                answer_substring = answer_substring + ' ' + each.text
+                added_flag == True
+                print("Substr:",answer_substring)
+        if added_flag:
+            return answer_substring
+        return answer_list            
 
 
 def overlap(question, sentence_details_array, expected_answer_type, rootverb, original_question_string):
@@ -376,10 +468,11 @@ def overlap(question, sentence_details_array, expected_answer_type, rootverb, or
 
     if "when" in question_lem_arr and when_ans.items != []:
         answer_list = "".join(sorted(when_ans.items(), reverse = True)[0][1][0])
+        answer_list = find_answer_from_sentence(answer_list, "when")
 
     elif "where" in question_lem_arr and where_ans.items != []:
         answer_list = "".join(sorted(where_ans.items(), reverse = True)[0][1][0])
-
+        answer_list = find_answer_from_sentence(answer_list, "where")
     # elif "how" in question_lem_arr and how_ans != {}:
     #     answer_list = "".join(sorted(where_ans.items(), reverse=True)[0][1][0])
 
@@ -433,7 +526,9 @@ def process_question(question_data, output_stream, sentence_details_array, quest
             qid = each.split(": ")[1]
             output_stream.write(each)
         if question in each:
+            # print(each)
             answer = find_answer(qid, each, sentence_details_array, question_dict)
+            # print(answer)
             output_stream.write(answer)
             output_stream.write(newline + newline)
 
@@ -491,7 +586,7 @@ def check_accuracy(question_dict, answer_dict, accuracy):
             accuracy+=1
         return accuracy    
 
-def fetch_file_data_and_process(input_file_data, output_stream):
+def fetch_file_data_and_process(input_file_data, output_stream, answer_key):
     directory_path = input_file_data[0]
     accuracy =0
     total = 0
@@ -516,7 +611,7 @@ def fetch_file_data_and_process(input_file_data, output_stream):
         filename_path_answers = filename_path + ".answers"
         answers_data = open(filename_path_answers, "r").read()
         populate_answer_dict(answers_data, answer_dict)
-        
+        answer_key.write(answers_data)
         # for questionid, quest_ans in question_dict.items():
         #     print("QID: ",questionid)
         #     print("Question: ", quest_ans[0])
@@ -550,8 +645,9 @@ def fetch_file_data_and_process(input_file_data, output_stream):
 def main():
     input_file_data = input_file_contents()
     output_stream = open("output.txt", "w")
+    answer_key = open("answerkey.txt", "w")
     # get_questions_map("question_types.txt")
-    fetch_file_data_and_process(input_file_data, output_stream)
+    fetch_file_data_and_process(input_file_data, output_stream, answer_key)
     output_stream.close()
 
 
