@@ -19,7 +19,9 @@ class SentenceDetails:
 
 question_map = {"how tall": ['QUANTITY'], "who" : ['PERSON','ORGANIZATION'],"when" : ['DATE', 'TIME'],
                 "where":['LOC', 'GPE'], "how much" : ['ORDINAL','PERCENT','MONEY'], "whose":['PERSON'],
-                "how big": ['ORDINAL', 'QUANTITY']}
+                "how big": ['ORDINAL', 'QUANTITY'], "how many" : ['ORDINAL', "QUANTITY", "CARDINAL"],
+                "how long" : ["QUANTITY", "DATE"], "how old" : ["DATE"], "how often" : ["DATE"],
+                "how far" : ["TIME", "QUANTITY"]}
 nlp = spacy.load('en_core_web_sm')
 # question_map = {}
 
@@ -181,9 +183,6 @@ def checkNer_for_who(sent_nerlist, sentence_record, original_question_string):
 
 def checkNer(question, nerlist, expected_answer_type):
     matches = []
-    # print(nerlist)
-    # print(question)
-
 #    check if ner list and expected_answer_type have anything in common
     for question_key, expected_answer_list in expected_answer_type.items():
         for answer_type in expected_answer_list:
@@ -277,23 +276,15 @@ def overlap(question, sentence_details_array, expected_answer_type, rootverb, or
     for word in question:
         if word.pos != "PUNCT":
             question_lem_arr.append(word.lemma)
-    #result_arr = []
-    # for sentence, taglist in sentence_dict.items():
-    #     d = {}
-    #     d["sentence"] = [sentence, taglist]
-    #     d["count"] = 0
-    #     result_arr.append(d)
-        # for k, v in d.items():
-        #     print(k,v)
-    # print(question)
+
+    #print(original_question_string)
 
     who_ans = {}
     where_ans = {}
     when_ans = {}
+    how_ans = {}
     if 'why' in question_lem_arr:
         return whyqs(sentence_details_array, question_lem_arr)
-        
-
 
     for record in sentence_details_array:
         verbMatchCnt = 0
@@ -301,12 +292,22 @@ def overlap(question, sentence_details_array, expected_answer_type, rootverb, or
         for word in record.sentence[1]:
             if matchOrSimilarity(question_lem_arr, word):
                 record.count += 1
-                # print("Matched word", word.lemma)
             if word.lemma == rootverb:
                 verbMatchCnt += 1
         nerlist = []
         for each in record.ners:
             nerlist.append(each.label_)
+
+        if "how" in question_lem_arr:
+            matches = checkNer(question_lem_arr, nerlist, expected_answer_type)
+            if record.count > 0 and matches != 0:
+                how_score = len(matches)+record.count+(verbMatchCnt*5)
+                if how_ans.get(how_score):
+                    how_ans[how_score].append(record.sentence[0])
+                else:
+                    how_ans[how_score] = [record.sentence[0]]
+        if 'how' in question_lem_arr and record.count >= 1 and how_ans != {}:
+            answer_list = "".join(sorted(how_ans.items(), reverse=True)[0][1][0])
 
         if "where" in question_lem_arr:
             matches = checkNer(question_lem_arr, nerlist, expected_answer_type)
@@ -316,7 +317,7 @@ def overlap(question, sentence_details_array, expected_answer_type, rootverb, or
             else:
                 where_ans[score] = [record.sentence[0]]
 
-        elif 'who' in question_lem_arr and record.count >= 1:
+        if 'who' in question_lem_arr and record.count >= 1:
             #print("Ans: ",record.sentence[0])
             matches = checkNer_for_who(nerlist, record, original_question_string)
             verbMatchCnt = verbMatchCnt*5
@@ -329,12 +330,6 @@ def overlap(question, sentence_details_array, expected_answer_type, rootverb, or
                 who_ans[final_count] = [record.sentence[0]]
         if 'who' in question_lem_arr and record.count >= 1 and who_ans.items != []:
             answer_list = "".join(sorted(who_ans.items(), reverse=True)[0][1][0])
-        # if "when" in question_lem_arr:
-        #     # score = whenqs(record.vount, matches, sentence_details_array)
-        #     if when_ans.get(score):
-        #         when_ans[score].append(record.sentence[0])
-        #     else:
-        #         when_ans[score] = [record.sentence[0]]
 
         if "when" in question_lem_arr:
             matches = checkNer(question_lem_arr, nerlist, expected_answer_type)
@@ -344,34 +339,17 @@ def overlap(question, sentence_details_array, expected_answer_type, rootverb, or
             else:
                 when_ans[score] = [record.sentence[0]]
 
-
-        # print("Ans: ",record.sentence[0])
-        # print(assignScore(matches, record.count, verbMatchCnt))
-        # if (matches !=0 and record.count > 0) or (matches == 0 and record.count > 6):
-        #     answer_list.append(record.sentence[0])            
     if "when" in question_lem_arr and when_ans.items != []:
         answer_list = "".join(sorted(when_ans.items(), reverse = True)[0][1][0])
-        # print(sorted(when_ans.items(), reverse = True)[:2])
 
-    if "where" in question_lem_arr and where_ans.items != []:
-        # print(sorted(where_ans.items(), reverse = True)[0][1])
+    elif "where" in question_lem_arr and where_ans.items != []:
         answer_list = "".join(sorted(where_ans.items(), reverse = True)[0][1][0])
 
-        # print(sorted(where_ans.items(), reverse = True)[:2])
+    # elif "how" in question_lem_arr and how_ans != {}:
+    #     answer_list = "".join(sorted(where_ans.items(), reverse=True)[0][1][0])
 
 
-            #print("SCORE: ", final_count)
 
-        # else:
-        #     matches = checkNer(question_lem_arr, nerlist, expected_answer_type)
-
-        #matches = checkNer(question_lem_arr, nerlist, expected_answer_type)
-        #print(assignScore(matches, record.count, verbMatchCnt))
-
-
-        #if (matches !=0 and record.count > 0) or (matches == 0 and record.count > 6):
-         #   answer_list.append(record.sentence[0])
-    #print(answer_list)
     return answer_list
 
 
@@ -482,18 +460,18 @@ def fetch_file_data_and_process(input_file_data, output_stream):
         answers_data = open(filename_path_answers, "r").read()
         populate_answer_dict(answers_data, answer_dict)
         accuracy_count = 0
-        accuracy_count = check_accuracy(question_dict, answer_dict, accuracy_count)
+        # accuracy_count = check_accuracy(question_dict, answer_dict, accuracy_count)
+        # print("***********************************")
+        # print("Accuracy_count:", accuracy_count)
+        # print("Total qs:", len(question_dict.items()))
+        # print("Percentage accuracy: ", accuracy_count/len(question_dict.items()))
         print("***********************************")
-        print("Accuracy_count:", accuracy_count)
-        print("Total qs:", len(question_dict.items()))
-        print("Percentage accuracy: ", accuracy_count/len(question_dict.items()))
-        print("***********************************")
-        # for question, answer_list in question_dict.items():
-        #     print("***********************************")
-        #     print(question)
-        #     print("Question: ", answer_list[0])
-        #     print("Actual answer:", answer_dict.get(question))
-        #     print("Answer Found:", answer_list[1])
+        for question, answer_list in question_dict.items():
+            print("***********************************")
+            print(question)
+            print("Question: ", answer_list[0])
+            print("Actual answer:", answer_dict.get(question))
+            print("Answer Found:", answer_list[1])
             # for answer in answer_list:
             #     if answer_dict.get(question) in answer:
             #         accuracy_count +=1
