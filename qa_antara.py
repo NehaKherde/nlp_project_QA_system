@@ -27,7 +27,7 @@ nlp = spacy.load('en_core_web_sm')
 
 def input_file_contents():
     #    file = open(sys.argv[1], "r")
-    input_file = open("input_file.txt", "r")
+    input_file = open("all_input_file.txt", "r")
     file_contents = input_file.read()
     file_contents = file_contents.split('\n')
     #    print(file_contents)
@@ -233,13 +233,13 @@ def whenqs(overlapCount, matches, sentence_details_array, question_lem_arr):
     if 'the last' in question_lem_arr:
         for word in time_words:
             if word in sentence_details_array[0].sentence[1]:
-                score+=6
+                score+=20
                 break
     start_words = ['start', 'begin', 'since', 'year']
     if 'start' in question_lem_arr or 'begin' in question_lem_arr:
         for word in start_words:
             if word in sentence_details_array[0].sentence[1]:
-                score+=6
+                score+=20
                 break
     return score
 
@@ -269,6 +269,38 @@ def whyqs(sentence_details_array, question_lem_arr):
             max_score = record[index].score    
     return answer
 
+def whatqs(sentence_details_array, question_lem_arr, original_question_string):
+    question_ners = nlp(original_question_string).ents
+    question_ner_list = []
+    for each in question_ners:
+        question_ner_list.append(each.label_)
+    # print("*************************************")        
+    # print(original_question_string)
+    answer = None
+    max_score = 0
+    for index in range(0,len(sentence_details_array)):
+        record = sentence_details_array
+        record[index].count = 0
+        for word in record[index].sentence[1]:
+            if matchOrSimilarity(question_lem_arr, word):
+                record[index].count += 1
+                record[index].score +=3
+            if ('DATE' in question_ner_list) and ('today' in record[index].sentence[0] or 'yesterday' in record[0].sentence[0] or 'tomorrow' in record[0].sentence[0] or 'last night' in record[0].sentence[0]) :
+                record[index].score +=6
+            if ('kind' in question_lem_arr) and ('call' in record[index].sentence[0] or 'from' in record[0].sentence[0]):
+                record[index].score +=20
+            if ('name' in question_lem_arr) and ('name' in record[index].sentence[0] or 'call' in record[0].sentence[0] or 'known' in record[0].sentence[0]):    
+                record[index].score +=20
+            if record[index].score > max_score:
+                answer = record[index].sentence[0]
+                max_score = record[index].score    
+    return answer
+    
+        # print(record[index].sentence[0])
+        # print(record[index].score)
+
+
+
 def overlap(question, sentence_details_array, expected_answer_type, rootverb, original_question_string):
     question_lem_arr = []
     answer_list = ""
@@ -285,7 +317,8 @@ def overlap(question, sentence_details_array, expected_answer_type, rootverb, or
     how_ans = {}
     if 'why' in question_lem_arr:
         return whyqs(sentence_details_array, question_lem_arr)
-
+    elif 'what' in question_lem_arr:
+        return whatqs(sentence_details_array, question_lem_arr, original_question_string)            
     for record in sentence_details_array:
         verbMatchCnt = 0
         record.count = 0
@@ -328,6 +361,8 @@ def overlap(question, sentence_details_array, expected_answer_type, rootverb, or
                 who_ans[final_count].append(record.sentence[0])
             else:
                 who_ans[final_count] = [record.sentence[0]]
+
+
         if 'who' in question_lem_arr and record.count >= 1 and who_ans.items != []:
             answer_list = "".join(sorted(who_ans.items(), reverse=True)[0][1][0])
 
@@ -366,8 +401,10 @@ def find_answer(qid, question, sentence_details_array, question_dict):
     # print("Indirect Object:", idobject)
     # print("Root:", rootverb)
     answer_list = overlap(question_arr, sentence_details_array, expected_answer_type, rootverb, original_question)
+    answer = ""
     if answer_list != "":
         question_dict[qid] = [question, answer_list]
+        answer = answer_list
     else:
         question_dict[qid] = [question, "No answer found"]
 
@@ -382,7 +419,6 @@ def find_answer(qid, question, sentence_details_array, question_dict):
     #     print(token.word_name, token.lemma, token.pos)
     #     print(" ")
     header = "Answer: "
-    answer = ""
     return "\n" + header + answer
 
 
@@ -414,30 +450,51 @@ def populate_answer_dict(answers_data, answer_dict):
             answer_dict[qid] = ans
 
 def checkmatch(answer_found, answer):
-    answers = answer.split('|')
-    match = 0
-    for ans in answers:
-        if ans in answer_found:
-            match+=1
-    if match!=0:
-        return True
-    return False
+    if answer_found!="No answer found":
+        answers = answer.split('|')
+        count = 0
+        for ans in answers:
+            match = 0
+            for word in ans.split(" "):
+                if word in answer:
+                    match+=1
+            if match > count:
+                count = match
+        num_words_answer_found = len(answer_found)
+        num_words_actual_answer = len(answer) 
+        p = count/num_words_actual_answer
+        r = count/num_words_answer_found
+        if (p+r) == 0:
+            f_score = 0
+        else:
+            f_score = 2*(p)*(r)/(p+r)
+        # print(f_score)
+    return True 
+    # match = 0
+    # for ans in answers:
+    #     if ans in answer_found:
+    #         match+=1
+    # if match!=0:
+    #     return True
+    # return False
 
 def check_accuracy(question_dict, answer_dict, accuracy):
     for questionid, quest_ans in question_dict.items():
-        print("QID: ",questionid)
-        print("Question: ", quest_ans[0])
+        # print("QID: ",questionid)
+        # print("Question: ", quest_ans[0])
         answer = answer_dict.get(questionid)
-        print("Answer expected:", answer)
+        # print("Answer expected:", answer)
         answer_found = quest_ans[1]
-        print("Answer found: ", answer_found)
+        # print("Answer found: ", answer_found)
         if checkmatch(answer_found, answer):
-            print("Correct Answer!!!!")
+            # print("Correct Answer!!!!")
             accuracy+=1
         return accuracy    
 
 def fetch_file_data_and_process(input_file_data, output_stream):
     directory_path = input_file_data[0]
+    accuracy =0
+    total = 0
     for i in range(1, len(input_file_data)):
         # process each set of story and questions at once.
         filename_path = directory_path + input_file_data[i]
@@ -459,19 +516,25 @@ def fetch_file_data_and_process(input_file_data, output_stream):
         filename_path_answers = filename_path + ".answers"
         answers_data = open(filename_path_answers, "r").read()
         populate_answer_dict(answers_data, answer_dict)
-        accuracy_count = 0
+        
+        # for questionid, quest_ans in question_dict.items():
+        #     print("QID: ",questionid)
+        #     print("Question: ", quest_ans[0])
+        #     answer = answer_dict.get(questionid)
+        #     print("Answer expected:", answer)
+        #     answer_found = quest_ans[1]
+        #     print("Answer found: ", answer_found)
+        #     if checkmatch(answer_found, answer):
+        #         # print("Correct Answer!!!!")
+        #         accuracy+=1
+        # total+=len(question_dict.items())
+        # accuracy_count = 0
+
         # accuracy_count = check_accuracy(question_dict, answer_dict, accuracy_count)
         # print("***********************************")
         # print("Accuracy_count:", accuracy_count)
         # print("Total qs:", len(question_dict.items()))
         # print("Percentage accuracy: ", accuracy_count/len(question_dict.items()))
-        print("***********************************")
-        for question, answer_list in question_dict.items():
-            print("***********************************")
-            print(question)
-            print("Question: ", answer_list[0])
-            print("Actual answer:", answer_dict.get(question))
-            print("Answer Found:", answer_list[1])
             # for answer in answer_list:
             #     if answer_dict.get(question) in answer:
             #         accuracy_count +=1
@@ -479,7 +542,10 @@ def fetch_file_data_and_process(input_file_data, output_stream):
         # print("**********************************************************************")
         # print("Accuracy:", accuracy_count)
         # print("**********************************************************************")
-        
+    # print("***********************************")
+    # print("Accuracy_count:", accuracy)
+    # print("Total qs:", total)
+    # print("Percentage accuracy: ", (accuracy/total)*100)
             
 def main():
     input_file_data = input_file_contents()
