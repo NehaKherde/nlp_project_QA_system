@@ -308,7 +308,7 @@ def whatqs(sentence_details_array, question_lem_arr, original_question_string):
         # print(record[index].sentence[0])
         # print(record[index].score)
 
-def find_answer_from_sentence(answer_list, type):
+def find_answer_from_sentence(answer_list, type, original_question_string):
     answer_substring = ""
     sent = nlp(answer_list)
 
@@ -356,42 +356,47 @@ def find_answer_from_sentence(answer_list, type):
             answer_substring = answer_list
         return answer_substring
 
-    # if type == "where":
-    #     location_preps = ["in", "at", "near", "inside"]
-
-    #     found_index = -1
-    #     ner_list = sent.ents
-    #     found_flag = False
-    #     min_index = 10000000
-    #     for location_prep in location_preps:
-    #         if (' ' + location_prep + ' ') in answer_list:
-    #             found_index = answer_list.index(" " + location_prep + " ")
-    #             if found_index < min_index:
-    #                 min_index = found_index
-    #             found_flag = True
-    #     if found_flag:
-    #         answer_substring = answer_list[min_index+1:]
-    #             # if (each.label_ == 'GPE' or each.label_ == 'LOC') and each.start_char >= found_index:
-    #             #     answer_substring = answer_substring + ' ' + each.text
-    #     else:
-    #         answer_substring = answer_list
-    #     return answer_substring
-
     elif type == "when":
-        # print("Orig:", answer_list)
-        preps = ["in","on"]
-        found_index = -1
         ner_list = nlp(answer_list).ents
         added_flag = False
         for each in ner_list:
             if (each.label_ == 'DATE' or each.label_ == 'TIME'):
                 answer_substring = answer_substring + ' ' + each.text
-                added_flag == True
-                print("Substr:",answer_substring)
-        if added_flag:
+                added_flag = True
+                    # print("Substr:",answer_substring)
+        if added_flag == True:
+                # print("Returning: ", answer_substring)
             return answer_substring
-        return answer_list            
+        return answer_list
 
+    elif type == "who":
+        ner_list = nlp(answer_list).ents
+        added_flag = False
+        for each in ner_list:
+            if (each.label_ == 'PERSON' or each.label_ == 'ORGANIZATION'):
+                answer_substring = answer_substring + ' ' + each.text
+                added_flag = True
+                    # print("Substr:",answer_substring)
+        if added_flag == True:
+                # print("Returning: ", answer_substring)
+            return answer_substring
+        return answer_list                
+
+    elif type == "how" :
+        ner_list = nlp(answer_list).ents
+        # handle case of how tall
+        if "how tall" in original_question_string.lower():
+            for ner in ner_list:
+                if ner.label_ in question_map["how tall"]:
+                    answer_substring = answer_substring + ' ' + ner.text
+
+        elif "how many" in original_question_string.lower():
+            for ner in ner_list:
+                if ner.label_ in question_map["how many"]:
+                    answer_substring = answer_substring + ' ' + ner.text
+        else:
+            answer_substring = answer_list
+        return answer_substring    
 
 def overlap(question, sentence_details_array, expected_answer_type, rootverb, original_question_string):
     question_lem_arr = []
@@ -466,13 +471,18 @@ def overlap(question, sentence_details_array, expected_answer_type, rootverb, or
             else:
                 when_ans[score] = [record.sentence[0]]
 
+
+
     if "when" in question_lem_arr and when_ans.items != []:
         answer_list = "".join(sorted(when_ans.items(), reverse = True)[0][1][0])
-        answer_list = find_answer_from_sentence(answer_list, "when")
-
+        answer_list = find_answer_from_sentence(answer_list, "when", original_question_string)
     elif "where" in question_lem_arr and where_ans.items != []:
         answer_list = "".join(sorted(where_ans.items(), reverse = True)[0][1][0])
-        answer_list = find_answer_from_sentence(answer_list, "where")
+        answer_list = find_answer_from_sentence(answer_list, "where", original_question_string)
+    elif "who" in question_lem_arr and who_ans.items != []:
+        answer_list = find_answer_from_sentence(answer_list, "who", original_question_string)
+    elif "how" in question_lem_arr and who_ans.items != []:
+        answer_list = find_answer_from_sentence(answer_list, "how", original_question_string)
     # elif "how" in question_lem_arr and how_ans != {}:
     #     answer_list = "".join(sorted(where_ans.items(), reverse=True)[0][1][0])
 
