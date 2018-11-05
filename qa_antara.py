@@ -17,11 +17,17 @@ class SentenceDetails:
         self.ners = []
         self.score = 0
 
+# question_map = {"how tall": ['QUANTITY'], "who" : ['PERSON','ORGANIZATION'],"when" : ['DATE', 'TIME'],
+#                 "where":['LOC', 'GPE'], "how much" : ['ORDINAL','PERCENT','MONEY'], "whose":['PERSON'],
+#                 "how big": ['ORDINAL', 'QUANTITY'], "how many" : ['ORDINAL', "QUANTITY", "CARDINAL"],
+#                 "how long" : ["QUANTITY", "DATE"], "how old" : ["DATE"], "how often" : ["DATE"],
+#                 "how far" : ["TIME", "QUANTITY"]}
+
 question_map = {"how tall": ['QUANTITY'], "who" : ['PERSON','ORGANIZATION'],"when" : ['DATE', 'TIME'],
-                "where":['LOC', 'GPE'], "how much" : ['ORDINAL','PERCENT','MONEY'], "whose":['PERSON'],
-                "how big": ['ORDINAL', 'QUANTITY'], "how many" : ['ORDINAL', "QUANTITY", "CARDINAL"],
-                "how long" : ["QUANTITY", "DATE"], "how old" : ["DATE"], "how often" : ["DATE"],
-                "how far" : ["TIME", "QUANTITY"]}
+                "where":['LOC', 'GPE'], "how much" : ['PERCENT','MONEY'], "whose":['PERSON'],
+                "how big": ['QUANTITY'], "how many" : ['ORDINAL', "QUANTITY", "CARDINAL"],
+                "how long" : ["QUANTITY", "DATE", "TIME"], "how old" : ["DATE"], "how often" : ["DATE"],
+                "how far" : ["TIME", "QUANTITY"], "how high": ['QUANTITY'], "how large": ['QUANTITY'], "how deep": ['QUANTITY']}                
 nlp = spacy.load('en_core_web_sm')
 # question_map = {}
 
@@ -267,12 +273,12 @@ def whyqs(sentence_details_array, question_lem_arr):
         if record[index].score > max_score:
             answer = record[index].sentence[0]
             max_score = record[index].score    
-    if 'so' in answer:
-        index = answer.index('so')
-        return answer[index:]
     if 'because' in answer:
         index = answer.index('because')
         return answer[index:] 
+    if 'so' in answer:
+        index = answer.index('so')
+        return answer[index:]
     if 'want' in answer:
         index = answer.index('want')
         return answer[index:]
@@ -382,6 +388,22 @@ def find_answer_from_sentence(answer_list, type, original_question_string):
             return answer_substring
         return answer_list                
 
+    # elif type == "how" :
+    #     ner_list = nlp(answer_list).ents
+    #     # handle case of how tall
+    #     if "how tall" in original_question_string.lower():
+    #         for ner in ner_list:
+    #             if ner.label_ in question_map["how tall"]:
+    #                 answer_substring = answer_substring + ' ' + ner.text
+
+    #     elif "how many" in original_question_string.lower():
+    #         for ner in ner_list:
+    #             if ner.label_ in question_map["how many"]:
+    #                 answer_substring = answer_substring + ' ' + ner.text
+    #     else:
+    #         answer_substring = answer_list
+    #     return answer_substring    
+
     elif type == "how" :
         ner_list = nlp(answer_list).ents
         # handle case of how tall
@@ -390,9 +412,49 @@ def find_answer_from_sentence(answer_list, type, original_question_string):
                 if ner.label_ in question_map["how tall"]:
                     answer_substring = answer_substring + ' ' + ner.text
 
+        elif "how far" in original_question_string.lower():
+            for ner in ner_list:
+                if ner.label_ in question_map["how far"]:
+                    answer_substring = answer_substring + ' ' + ner.text
+
+        elif "how deep" in original_question_string.lower():
+            for ner in ner_list:
+                if ner.label_ in question_map["how deep"]:
+                    answer_substring = answer_substring + ' ' + ner.text
+
+        elif "how large" in original_question_string.lower():
+            for ner in ner_list:
+                if ner.label_ in question_map["how large"]:
+                    answer_substring = answer_substring + ' ' + ner.text
+
+        elif "how often" in original_question_string.lower():
+            for ner in ner_list:
+                if ner.label_ in question_map["how often"]:
+                    answer_substring = answer_substring + ' ' + ner.text
+
+        elif "how big" in original_question_string.lower():
+            for ner in ner_list:
+                if ner.label_ in question_map["how big"]:
+                    answer_substring = answer_substring + ' ' + ner.text
+
+        elif "how old" in original_question_string.lower():
+            for ner in ner_list:
+                if ner.label_ in question_map["how old"]:
+                    answer_substring = answer_substring + ' ' + ner.text
+
         elif "how many" in original_question_string.lower():
             for ner in ner_list:
                 if ner.label_ in question_map["how many"]:
+                    answer_substring = answer_substring + ' ' + ner.text
+
+        elif "how much" in original_question_string.lower():
+            for ner in ner_list:
+                if ner.label_ in question_map["how much"]:
+                    answer_substring = answer_substring + ' ' + ner.text
+
+        elif "how long" in original_question_string.lower():
+            for ner in ner_list:
+                if ner.label_ in question_map["how long"]:
                     answer_substring = answer_substring + ' ' + ner.text
         else:
             answer_substring = answer_list
@@ -405,9 +467,6 @@ def overlap(question, sentence_details_array, expected_answer_type, rootverb, or
     for word in question:
         if word.pos != "PUNCT":
             question_lem_arr.append(word.lemma)
-
-    #print(original_question_string)
-
     who_ans = {}
     where_ans = {}
     when_ans = {}
