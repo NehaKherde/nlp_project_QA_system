@@ -1,0 +1,1565 @@
+QuestionID: 1999-W07-5-1
+Question: Where did the Kolla boys get lost?
+Answer:  a ski resort | the Schweitzer Mountain Ski Resort in Sandpoint, Idaho | the Schweitzer Mountain Ski Resort
+Difficulty: Moderate
+
+QuestionID: 1999-W07-5-2
+Question: Who is the youngest brother?
+Answer: A.J. Kolla
+Difficulty: Moderate
+
+QuestionID: 1999-W07-5-4
+Question: When did the boys realize they were lost?
+Answer: when they reached a riverbank around 4 p.m. | when they reached a riverbank | around 4 p.m
+Difficulty: Easy
+
+QuestionID: 1999-W07-5-5
+Question: Where did they dig the snow cave in which they spent the night?
+Answer: the base of a tree | the snow hollow around the base of a tree
+Difficulty: Moderate
+
+QuestionID: 1999-W07-5-6
+Question: What did they use to dig the snow cave?
+Answer: their hands
+Difficulty: Easy
+
+QuestionID: 1999-W07-5-7
+Question: Why was the search for the boys called off?
+Answer: weather | blizzard | wind | 110-kilometres-an-hour winds
+Difficulty: Easy
+
+QuestionID: 1999-W07-5-8
+Question: Who found the boys?
+Answer: a party of snowmobilers
+Difficulty: Easy
+
+QuestionID: 1999-W07-5-12
+Question: What are the boys' parents' names?
+Answer: Michael and Carol
+Difficulty: Moderate
+
+QuestionID: 1999-W08-1-1
+Question: What does "perjury" mean?
+Answer: lying in court
+Difficulty: Easy
+
+QuestionID: 1999-W08-1-2
+Question: How many senators voted that President Clinton was guilty of perjury?
+Answer: 45
+Difficulty: Easy
+
+QuestionID: 1999-W08-1-3
+Question: When was Clinton acquitted of the charges of perjury and obstructing justice?
+Answer: Friday
+Difficulty: Moderate
+
+QuestionID: 1999-W08-1-4
+Question: Where did Monica Lewinsky work as an intern?
+Answer: the White House
+Difficulty: Moderate
+
+QuestionID: 1999-W08-1-5
+Question: Who claimed that Clinton tried to get Lewinsky to lie about her affair with the president?
+Answer: Republican senators
+Difficulty: Easy
+
+QuestionID: 1999-W08-1-7
+Question: What happened to Clinton's approval ratings during the impeachment trial?
+Answer: they climbed
+Difficulty: Easy
+
+QuestionID: 1999-W08-5-2
+Question: How can the satellite help farmers?
+Answer: it can help forecast crop yields
+Difficulty: Easy
+
+QuestionID: 1999-W08-5-4
+Question: Why might the Canadian government have to get someone else beside NASA to launch the satellite for them?
+Answer: NASA is refusing to send the Radarsat-2 satellite into the sky | NASA Refuses to Launch the Satellite
+Difficulty: Moderate
+
+QuestionID: 1999-W08-5-5
+Question: Who is concerned about Radarsat-2's powerful abilities?
+Answer: the United States | the U.S. | the U.S. government | the United States government | the U.S. intelligence community
+Difficulty: Easy
+
+QuestionID: 1999-W08-5-6
+Question: Who is the director of strategic development for the Canadian Space Agency?
+Answer: Hugues Gilbert
+Difficulty: Easy
+
+QuestionID: 1999-W09-5-1
+Question: Who is Moshe Akavak?
+Answer: a guard with the BCC | a guard with the Baffin Correctional Centre | a jail guard
+Difficulty: Easy
+
+QuestionID: 1999-W09-5-2
+Question: When did Akavak get his job?
+Answer: 16 years ago
+Difficulty: Moderate
+
+QuestionID: 1999-W09-5-3
+Question: Why does Akavak think some Inuits commit crimes?
+Answer: they have lost their traditional skills
+Difficulty: Moderate
+
+QuestionID: 1999-W09-5-5
+Question: How much do the hunting programs cost?
+Answer: tens of thousands of dollars
+Difficulty: Easy
+
+QuestionID: 1999-W09-5-6
+Question: Where do the hunting parties go to hunt caribou?
+Answer: far from the city on the frozen tundra | far from the city | on the frozen tundra
+Difficulty: Easy
+
+QuestionID: 1999-W09-5-7
+Question: What kind of animal do the inmates hunt in the summertime?
+Answer: seals
+Difficulty: Easy
+
+QuestionID: 1999-W09-5-8
+Question: Who is one of the prisoners on today's hunt?
+Answer: Michael Evic
+Difficulty: Moderate
+
+QuestionID: 1999-W20-4-2
+Question: Where did Sean use to do his panhandling?
+Answer: on a patch of downtown Ottawa sidewalk, wedged between a bank and a grocery store | Ottawa | on a patch of downtown Ottawa sidewalk
+Difficulty: Moderate
+
+QuestionID: 1999-W20-4-4
+Question: When was Sean fined for begging?
+Answer: March, 1999
+Difficulty: Moderate
+
+QuestionID: 1999-W20-4-6
+Question: Who is Sean's lawyer?
+Answer: Mark Ertle
+Difficulty: Easy
+
+QuestionID: 1999-W20-4-7
+Question: What kinds of laws have governments passed that limit the freedom of expression?
+Answer: laws against pornography and hate propaganda | laws against pornography | laws against hate propaganda | anti-panhandling laws
+Difficulty: Moderate
+
+QuestionID: 1999-W26-1-1
+Question: Who is the Kosovo Liberation Army (KLA)?
+Answer: a group of Yugoslavians of Albanian heritage who were fighting against the Yugoslavian army
+Difficulty: Easy
+
+QuestionID: 1999-W26-1-2
+Question: As part of the peace deal with the KLA, what have KLA members agreed to do?
+Answer: hand over their large weapons to NATO forces and stop wearing military uniforms
+Difficulty: Moderate
+
+QuestionID: 1999-W26-1-3
+Question: Where are ethnic Albanian refugees living?
+Answer: refugee camps and countries around the world | refugee camps in the countries surrounding Yugoslavia and countries around the world | refugee camps in the countries surrounding Yugoslavia and countries around the world, including Canada 
+Difficulty: Easy
+
+QuestionID: 1999-W26-1-6
+Question: When did the G8 meet to come up with a plan to rebuild the war-torn region of Yugoslavia?
+Answer: over the weekend | June 19-20, 1999
+Difficulty: Moderate
+
+QuestionID: 1999-W26-1-7
+Question: How much could it cost to rebuild from the damage caused by NATO's bombing of Yugoslavia?
+Answer: more than a hundred billion dollars 
+Difficulty: Easy
+
+QuestionID: 1999-W26-1-9
+Question: Why is a democratic society in Kosovo essential, according to Lloyd Axworthy?
+Answer: that's the only way that you're going to bring ultimate peace, stability and reconstruction to the area
+Difficulty: Moderate
+
+QuestionID: 1999-W27-3-1
+Question: Why is producer Daryl Neudorf suing singer Sarah McLachlan?
+Answer: for song writing credit and a share of money from her first album
+Difficulty: easy
+
+QuestionID: 1999-W27-3-2
+Question: Where is this case being tried?
+Answer: Vancouver, British Columbia | in a court in Vancouver, British Columbia
+Difficulty: moderate
+
+QuestionID: 1999-W27-3-4
+Question: What does Neudorf claim about the eight songs on Sarah McLachlan's first album?
+Answer: he co-wrote four of those songs  | that he co-wrote four of those songs | he co-wrote four of those songs, including Sad Clown
+Difficulty: moderate
+
+QuestionID: 1999-W27-3-5
+Question: How is Neudorf given credit on the album cover?
+Answer: for pre-production, coordination and production assistance
+Difficulty: easy
+
+QuestionID: 1999-W27-3-6
+Question: Who is Jennifer Conkie?
+Answer: Ms. McLachlan's lawyer | Sarah McLachlan's lawyer
+Difficulty: easy
+
+QuestionID: 1999-W27-3-8
+Question: What is Canada's copyright law largely based on?
+Answer: the law in the United Kingdom
+Difficulty: easy
+
+QuestionID: 1999-W27-3-9
+Question: Why might it take months before a decision is made in this case?
+Answer: because of the complexity of the case
+Difficulty: moderate
+
+QuestionID: 1999-W27-3-10
+Question: When did Canada's copyright act come into effect?
+Answer: 1924
+Difficulty: easy
+
+QuestionID: 1999-W28-1-1
+Question: Where was Tyrell Dueck from?
+Answer: Martensville, Saskatchewan | Martensville | Saskatchewan
+Difficulty: Easy
+
+QuestionID: 1999-W28-1-2
+Question: What was wrong with Tyrell before he died?
+Answer: cancer | a tumour | Tyrell had a cancerous tumour in his leg | cancer had spread to Tyrell's lungs | Tyrell's tumour started bleeding | Tyrell's tumour started bleeding and he needed blood transfusions
+Difficulty: Easy
+
+QuestionID: 1999-W28-1-3
+Question: What kind of treatment did Tyrell and his parents want to try for his condition?
+Answer: herbal, and alternative treatments that included large doses of vitamins and a special diet
+Difficulty: Moderate
+
+QuestionID: 1999-W28-1-4
+Question: Why did the Saskatchewan government take Tyrell's case to the court of law?
+Answer: The Saskatchewan government didn't think alternative medicine would work | to force him to undergo surgery for the cancer in his leg
+Difficulty: Easy
+
+QuestionID: 1999-W28-1-5
+Question: How long was Tyrell's treatment delayed while the case went through the courts?
+Answer: three months
+Difficulty: Easy
+
+QuestionID: 1999-W28-1-6
+Question: When did the provincal government drop the case against Tyrell?
+Answer: When it was discovered the cancer had spread to Tyrell's lungs
+Difficulty: Easy
+
+QuestionID: 1999-W28-1-7
+Question: Who claimed that Tyrell didn't have cancer?
+Answer: doctors in Mexico
+Difficulty: Moderate
+
+QuestionID: 1999-W28-1-8
+Question: According to Joe Bourgeault, why did the alternative medicine fail to work in Tyrell's case?
+Answer: it may have been delayed too long
+Difficulty: Moderate
+
+QuestionID: 1999-W29-4-1
+Question: Why did Amber Ramirez have surgery to remove part of her brain?
+Answer: to control a disease she has suffered from her whole life | to control a very rare form of brain disease
+Difficulty: moderate
+
+QuestionID: 1999-W29-4-2
+Question: What is Rasmussen's disease?
+Answer: a very rare form of brain disease | a very rare form of brain disease that can occur at any time in childhood
+Difficulty: easy
+
+QuestionID: 1999-W29-4-3
+Question: When can Rasmussen's disease occur?
+Answer: at any time in childhood
+Difficulty: moderate
+
+QuestionID: 1999-W29-4-4
+Question: What happens to cells in one half of the brain as a result of Rasmussen's disease?
+Answer: they become inflamed or puffy when infected
+Difficulty: moderate
+
+QuestionID: 1999-W29-4-5
+Question: How does the electrical energy being fired off when it is not supposed to affect the brain?
+Answer: causes epileptic seizures
+Difficulty: moderate
+
+QuestionID: 1999-W29-4-6
+Question: Which side of Amber's brain was affected by Rasmussen's disease?
+Answer: the left side
+Difficulty: moderate
+
+QuestionID: 1999-W29-4-7
+Question: What might happen to Amber as a result of the surgery?
+Answer: she might be unable to talk | the surgery could leave Amber without the ability to talk
+Difficulty: moderate
+
+QuestionID: 1999-W29-4-8
+Question: On whom is a hemispherectomy usually performed?
+Answer: on younger patients
+Difficulty: easy
+
+QuestionID: 1999-W31-1-1
+Question: Why is the round goby dangerous?
+Answer: because it leaves almost no food for other fish
+Difficulty: easy
+
+QuestionID: 1999-W31-1-2
+Question: Who is warning people in Ontario about the round goby?
+Answer: Environment Canada | The Fisheries and Oceans Department
+Difficulty: easy
+
+QuestionID: 1999-W31-1-3
+Question: What does the round goby eat?
+Answer: the eggs and young of the sport fish
+Difficulty: easy
+
+QuestionID: 1999-W31-1-4
+Question: When can the round goby feed due to its special sensors?
+Answer: right through the night | at night
+Difficulty: moderate
+
+QuestionID: 1999-W31-1-5
+Question: Where did the round goby come from?
+Answer: the Black Sea
+Difficulty: easy
+
+QuestionID: 1999-W31-1-6
+Question: How did the round goby likely get to Canadian waters?
+Answer:  in water held in the bottom of a boat
+Difficulty: easy
+
+QuestionID: 1999-W31-1-7
+Question: What should be people clean off their boats to keep the round goby from moving into new waters?
+Answer: plants | plants that might have small goby in them
+Difficulty: easy
+
+QuestionID: 1999-W31-3-1
+Question: Where were elections for premier held?
+Answer: Nova Scotia | in Nova Scotia
+Difficulty: easy
+
+QuestionID: 1999-W31-3-2
+Question: Who is Russell MacLellan?
+Answer: the leader of the Liberal Party
+Difficulty: easy
+
+QuestionID: 1999-W31-3-3
+Question: How many seats in the legislature did the Progressive Conservatives win in the election?
+Answer: 29
+Difficulty: easy
+
+QuestionID: 1999-W31-3-4
+Question: What does it mean to have a minority government?
+Answer: no one party had more than half the seats in the legislature | no one party has more than half the seats in the legislature
+Difficulty: moderate
+
+QuestionID: 1999-W31-3-5
+Question: How did the PC party place in the last election?
+Answer: third
+Difficulty: easy
+
+QuestionID: 1999-W31-3-6
+Question: By when has Hamm promised to cut people's taxes?
+Answer: within three years
+Difficulty: moderate
+
+QuestionID: 1999-W31-3-7
+Question: Why was Russell MacLellan forced to call an election?
+Answer: the other parties voted against his budget
+Difficulty: moderate
+
+QuestionID: 1999-W31-3-8
+Question: What does it mean when the government is defeated on a major bill?
+Answer: the legislature has lost confidence in them
+Difficulty: moderate
+
+QuestionID: 1999-W31-3-9
+Question: What must a premier do when there is a vote of non-confidence?
+Answer: either quit or call a new election
+Difficulty: easy
+
+QuestionID: 1999-W31-5-1
+Question: What was Eugene Shoemaker's lifelong wish?
+Answer: to go to the moon
+Difficulty: easy
+
+QuestionID: 1999-W31-5-2
+Question: How big is the container holding Shoemaker's ashes?
+Answer: lipstick-sized
+Difficulty: easy
+
+QuestionID: 1999-W31-5-3
+Question: Where is the Lunar Prospector supposed to crash-land?
+Answer: the moon | the south pole of the moon
+Difficulty: easy
+
+QuestionID: 1999-W31-5-4
+Question: What is NASA hoping the Lunar Prospector will create when it crash-lands?
+Answer: a plume of water which will be visible from Earth with a telescope | a plume of water
+Difficulty: moderate
+
+QuestionID: 1999-W31-5-5
+Question: On what was Shoemaker considered an authority?
+Answer: craters and the collisions that cause them
+Difficulty: moderate
+
+QuestionID: 1999-W31-5-6
+Question: How many comets is Shoemaker credited with discovering?
+Answer: about 20
+Difficulty: easy
+
+QuestionID: 1999-W31-5-7
+Question: When did Shoemaker discover the comet Shoemaker-Levy 9?
+Answer: 1994 | in 1994
+Difficulty: easy
+
+QuestionID: 1999-W31-5-8
+Question: What did Shoemaker-Levy 9 slam into?
+Answer: Jupiter
+Difficulty: easy
+
+QuestionID: 1999-W31-5-9
+Question: Whom did Shoemaker teach about craters?
+Answer: Apollo astronauts
+Difficulty: moderate
+
+QuestionID: 1999-W31-5-10
+Question: Why was Eugene Shoemaker rejected for astronaut training?
+Answer: because of a medical problem | a medical problem
+Difficulty: easy
+
+QuestionID: 1999-W31-5-11
+Question: What was Eugene Shoemaker's biggest disappointment in his life?
+Answer: "not going to the moon and banging on it with my own hammer"
+Difficulty: easy
+
+QuestionID: 1999-W32-4-1
+Question: Where was the third annual Robot World Cup Soccer tournament held?
+Answer: Sweden
+Difficulty: easy
+
+QuestionID: 1999-W32-4-2
+Question: How many robots play on each team?
+Answer: five
+Difficulty: easy
+
+QuestionID: 1999-W32-4-3
+Question: How large are the soccer-playing robots?
+Answer: about the size of a microwave oven | the size of a microwave oven
+Difficulty: moderate
+
+QuestionID: 1999-W32-4-4
+Question: What do the robots signal to each other?
+Answer: how to play during the game
+Difficulty: moderate
+
+QuestionID: 1999-W32-4-5
+Question: By when does the President of the RoboCup Federation want to have robots competing in soccer against humans?
+Answer: the year 2050
+Difficulty: moderate
+
+QuestionID: 1999-W32-4-6
+Question: Who was defeated in a chess match by IBM's Deep Blue supercomputer?
+Answer: Gary Kasparov | chess champion Gary Kasparov
+Difficulty: easy
+
+QuestionID: 1999-W32-4-8
+Question: How many teams competed in the third annual RoboCup tournament?
+Answer: almost a hundred
+Difficulty: easy
+
+QuestionID: 1999-W32-4-9
+Question: By 2002, who are expected to be competing in the RoboCup tournament?
+Answer: teams of human-size robots with two legs that walk and kick a ball
+Difficulty: moderate
+
+QuestionID: 1999-W32-4-11
+Question: Where will the RoboCup tournament be held next year?
+Answer: Australia | in Australia
+Difficulty: easy
+
+QuestionID: 1999-W32-5-1
+Question: Where did mudslides roar across part of the Trans-Canada highway?
+Answer: near Banff, Alberta
+Difficulty: moderate
+
+QuestionID: 1999-W32-5-2
+Question: What caused the mudslides?
+Answer: heavy rains | heavy rains near the B.C.-Alberta border
+Difficulty: moderate
+
+QuestionID: 1999-W32-5-3
+Question: How deep was the mud in some areas of the road?
+Answer: one metre
+Difficulty: easy
+
+QuestionID: 1999-W32-5-4
+Question: How much of the Trans-Canada highway was covered by the mud at its height?
+Answer: all four lanes
+Difficulty: easy
+
+QuestionID: 1999-W32-5-5
+Question: Who was able to re-open parts of the highway after many hours of work?
+Answer: clean up crews
+Difficulty: moderate
+
+QuestionID: 1999-W32-5-6
+Question: When will traffic return to normal, according to Parks Canada?
+Answer: in several days | several days
+Difficulty: moderate
+
+QuestionID: 1999-W32-5-7
+Question: Where do mudslides often occur?
+Answer: in steep and mountainous areas
+Difficulty: easy
+
+QuestionID: 1999-W32-5-8
+Question: What usually causes mudslides?
+Answer: weakened land on hills and mountains
+Difficulty: easy
+
+QuestionID: 1999-W32-5-10
+Question: What can mudslides do when they start moving quickly?
+Answer: pick up rocks, trees, houses and cars
+Difficulty: moderate
+
+QuestionID: 1999-W33-3-1
+Question: For whom did the last solar eclipse of the millennium brighten the morning?
+Answer: millions of people in Europe | people in Europe
+Difficulty: easy
+
+QuestionID: 1999-W33-3-2
+Question: What causes a solar eclipse?
+Answer: the moon passes between the Earth and the sun
+Difficulty: moderate
+
+QuestionID: 1999-W33-3-3
+Question: Where did the path of the moon's shadow begin?
+Answer: in the Atlantic
+Difficulty: easy
+
+QuestionID: 1999-W33-3-4
+Question: What is a total eclipse?
+Answer: the moon totally blocks the sun
+Difficulty: easy
+
+QuestionID: 1999-W33-3-5
+Question: How many times can an eclipse occur in one year?
+Answer: seven
+Difficulty: moderate
+
+QuestionID: 1999-W33-3-6
+Question: Why was this eclipse special?
+Answer: it was a total eclipse
+Difficulty: moderate
+
+QuestionID: 1999-W33-3-7
+Question: How long do total eclipses last?
+Answer: a few minutes
+Difficulty: easy
+
+QuestionID: 1999-W33-3-8
+Question: If an astronomer observed every total solar eclipse for twenty-five years, how much total eclipse time would he actually watch?
+Answer: only about an hour of total eclipses | about an hour 
+Difficulty: moderate
+
+QuestionID: 1999-W33-3-9
+Question: Where could a partial eclipse be seen?
+Answer: Eastern Canada
+Difficulty: easy
+
+QuestionID: 1999-W33-3-10
+Question: What is a partial eclipse?
+Answer: the moon covers part, but not all of the sun
+Difficulty: easy
+
+QuestionID: 1999-W33-5-2
+Question: Who do town officials want to help clean up the harbour?
+Answer: the federal and provincial governments
+Difficulty: easy
+
+QuestionID: 1999-W33-5-3
+Question: Why do so many people want to visit Lunenberg?
+Answer: because the town is a United Nations World Heritage Site
+Difficulty: moderate
+
+QuestionID: 1999-W33-5-4
+Question: When was the first International Fisherman's Trophy race held?
+Answer: 1920
+Difficulty: easy
+
+QuestionID: 1999-W33-5-5
+Question: How did the International Fisherman's Trophy race start?
+Answer: as a friendly competition between US and Canadian fishing schooners
+Difficulty: easy
+
+QuestionID: 1999-W33-5-6
+Question: How many times did the Bluenose win the International Fisherman's Trophy race?
+Answer: four
+Difficulty: easy
+
+QuestionID: 1999-W33-5-7
+Question: Where did the Bluenose sink?
+Answer: in the Caribbean Sea
+Difficulty: moderate
+
+QuestionID: 1999-W33-5-8
+Question: Where has a picture of the Bluenose appeared since 1937?
+Answer: on the tails side of Canadian dimes
+Difficulty: easy
+
+QuestionID: 1999-W33-5-9
+Question: What is the Bluenose II?
+Answer: a replica of the original Bluenose
+Difficulty: easy
+
+QuestionID: 1999-W33-5-10
+Question: How much of the cleanup cost for Lunenberg Harbor does the mayor of Lunenberg want the federal and provincial governments to pay?
+Answer: half
+Difficulty: easy
+
+QuestionID: 1999-W34-4-1
+Question: Where did the centre of the earthquake hit?
+Answer: Izmit
+Difficulty: easy
+
+QuestionID: 1999-W34-4-2
+Question: What is the capital of Turkey?
+Answer: Istanbul
+Difficulty: easy
+
+QuestionID: 1999-W34-4-3
+Question: When did the earthquake hit?
+Answer: around 3 o'clock in the morning | early Tuesday
+Difficulty: easy
+
+QuestionID: 1999-W34-4-4
+Question: Who spent hours digging through the rubble?
+Answer: rescue workers
+Difficulty: easy
+
+QuestionID: 1999-W34-4-5
+Question: About how many people were reportedly injured by the earthquake?
+Answer: at least 21,000
+Difficulty: easy
+
+QuestionID: 1999-W34-4-6
+Question: Why are earthquake victims being treated on the streets?
+Answer: Turkish hospitals are overcrowded | Turkish hospitals can't take any more patients
+Difficulty: moderate
+
+QuestionID: 1999-W34-4-7
+Question: What was the magnitude of the earthquake, according to the National Earthquake Information Centre in Colorado?
+Answer: 7.8
+Difficulty: easy
+
+QuestionID: 1999-W34-4-8
+Question: What does earthquake magnitude measure?
+Answer: the amount of energy released by an earthquake
+Difficulty: moderate
+
+QuestionID: 1999-W34-4-9
+Question: What are aftershocks?
+Answer: vibrations that follow an earthquake
+Difficulty: easy
+
+QuestionID: 1999-W34-4-11
+Question: What are Canada's disaster assistance troops trained in?
+Answer: communication and providing medical assistance
+Difficulty: moderate
+
+QuestionID: 1999-W35-5-2
+Question: What new question are Canadian pediatricians considering asking parents during a child's checkup?
+Answer: How much television do your kids watch?
+Difficulty: easy
+
+QuestionID: 1999-W35-5-3
+Question: Why does the Canadian Pediatric Society want doctors to monitor how much time children are sitting in front of electronic screens?
+Answer: because excessive and inappropriate exposure can harm a child's physical, mental and social skills
+Difficulty: moderate
+
+QuestionID: 1999-W35-5-4
+Question: How much time should school children spend watching TV each day?
+Answer: no more than two hours
+Difficulty: easy
+
+QuestionID: 1999-W35-5-5
+Question: At their current viewing rates, who will spend more time watching TV than they will in the classroom?
+Answer: the average high school graduate
+Difficulty: moderate
+
+QuestionID: 1999-W35-5-6
+Question: According to pediatricians, there is a relationship between watching television and an increase in what kind of behaviour?
+Answer: violent | violent behaviour 
+Difficulty: easy
+
+QuestionID: 1999-W35-5-7
+Question: When do pediatricians say the TV should be turned off?
+Answer: during meal times
+Difficulty: easy
+
+QuestionID: 1999-W35-5-9
+Question: How much time does the average Canadian kid spend watching television each week?
+Answer: 23 hours
+Difficulty: easy
+
+QuestionID: 1999-W37-2-3
+Question: What does Nunavut mean in the Inuktitut language of Canada's Inuit?
+Answer: our land
+Difficulty: easy
+
+QuestionID: 1999-W37-2-4
+Question: When did Nunavut became Canada's newest territory?
+Answer: April 1 | April 1, 1999
+Difficulty: easy
+
+QuestionID: 1999-W37-2-5
+Question: Where did President Chirac arrive in the Nunavut territory?
+Answer: the Nunavut capital of Iqaluit | Iqaluit
+Difficulty: easy
+
+QuestionID: 1999-W37-2-6
+Question: What are the Inuit in Nunavuk perfecting, according to French President Chirac?
+Answer: "the art of living together in a spirit of peace and tolerance" | "the art of living together"
+Difficulty: moderate
+
+QuestionID: 1999-W37-2-7
+Question: How much of the income in the Nunavut Territory comes from the art industry, according to Canadian Prime Minister Jean Chretien?
+Answer: thirty per cent
+Difficulty: easy
+
+QuestionID: 1999-W37-2-9
+Question: What site in Nunavut did President Chirat visit?
+Answer: a community hall run by the Nunavut Francophone Association | a community hall
+Difficulty: moderate
+
+QuestionID: 1999-W37-2-10
+Question: What did President Chirac open while he was in Nunavuk?
+Answer: a virtual museum of Inuit art on the Internet
+Difficulty: moderate
+
+QuestionID: 1999-W37-4-1
+Question: When did Adrienne Clarkson come to Canada as a refugee?
+Answer: 1942 | in 1942
+Difficulty: easy
+
+QuestionID: 1999-W37-4-2
+Question: Where was Adrienne Clarkson born?
+Answer: in Hong Kong | Hong Kong
+Difficulty: easy
+
+QuestionID: 1999-W37-4-3
+Question: What does Adrienne Clarkson call her appointment as Canada's governor general?
+Answer: a sign of Canadian evolution
+Difficulty: moderate
+
+QuestionID: 1999-W37-4-4
+Question: When does Clarkson replace the current governor general?
+Answer: Oct. 7 | October 7, 1999
+Difficulty: easy
+
+QuestionID: 1999-W37-4-5
+Question: What kind of role does Clarkson plan to play in Canadian unity?
+Answer: active yet sensible
+Difficulty: easy
+
+QuestionID: 1999-W37-4-6
+Question: How does Clarkson plan to use the governor general's Quebec City residence, the Citadel?
+Answer: more often
+Difficulty: easy
+
+QuestionID: 1999-W37-4-7
+Question: Who is Adrienne Clarkson replacing as governor general?
+Answer: Romeo LeBlanc
+Difficulty: easy
+
+QuestionID: 1999-W37-4-9
+Question: What did Adrienne Clarkson do during her career on CBC-TV?
+Answer: she was a high-profile interviewer and host
+Difficulty: moderate
+
+QuestionID: 1999-W37-4-10
+Question: How many public appearances does Canada's governor general make each year?
+Answer: more than 300
+Difficulty: easy
+
+QuestionID: 1999-W38-1-1
+Question: How many soldiers is Canada sending to East Timor?
+Answer: as many as 600
+Difficulty: easy
+
+QuestionID: 1999-W38-1-2
+Question: Where is the island of East Timor?
+Answer: between Indonesia and Australia
+Difficulty: moderate
+
+QuestionID: 1999-W38-1-3
+Question: When did the eastern half of East Timor vote to become independent from Indonesia?
+Answer: two weeks ago
+Difficulty: easy
+
+QuestionID: 1999-W38-1-4
+Question: Who has launched violent attacks in East Timor since the independence vote?
+Answer: the Indonesian army and local military groups who oppose independence
+Difficulty: moderate
+
+QuestionID: 1999-W38-1-5
+Question: What is the capital city of East Timor?
+Answer: Dili
+Difficulty: easy
+
+QuestionID: 1999-W38-1-7
+Question: Who pressured Habibie to change his mind about allowing peacekeeping troops into Indonesia?
+Answer: governments and human rights activists from around the world | governments and human rights activists
+Difficulty: moderate
+
+QuestionID: 1999-W38-1-8
+Question: When does Prime Minister Chretien expect Canada to have troops in East Timor?
+Answer: within 30 days
+Difficulty: easy
+
+QuestionID: 1999-W38-1-9
+Question: How many peacekeeping troops does Canada now have in 22 nations around the world?
+Answer: about 3,900 | 3,900
+Difficulty: easy
+
+QuestionID: 1999-W38-1-10
+Question: What are U.N. peacekeeping troops doing in war-torn Kosovo?
+Answer: making sure that the people are protected from violence
+Difficulty: easy
+
+QuestionID: 1999-W39-1-1
+Question: Why are francophones in the Northwest Territories angry?
+Answer: they say their rights are being ignored | their rights are being ignored
+Difficulty: moderate
+
+QuestionID: 1999-W39-1-2
+Question: What do francophones say their territorial government is not respecting?
+Answer: its own language law
+Difficulty: easy
+
+QuestionID: 1999-W39-1-3
+Question: How many people in the Northwest Territories speak French?
+Answer: a couple of thousand
+Difficulty: easy
+
+QuestionID: 1999-W39-1-4
+Question: Who is Andre Legare?
+Answer: president of the federation | president of the federation representing francophones in the Northwest Territories
+Difficulty: moderate
+
+QuestionID: 1999-W39-1-5
+Question: What percentage of documents requested from the territorial government in French were unavailable, according to a one-day survey?
+Answer: 75 per cent
+Difficulty: easy
+
+QuestionID: 1999-W39-1-6
+Question: Where did the survey report come from?
+Answer: the NWT language commissioner | the language commissioner
+Difficulty: easy
+
+QuestionID: 1999-W39-1-7
+Question: When will the case be presented to the territorial Supreme Court?
+Answer: next month | October, 1999
+Difficulty: easy
+
+QuestionID: 1999-W39-1-8
+Question: In addition to the Northwest Territories, where is the federal government responsible for ensuring the equality of French and English, according to Roger LePage?
+Answer: in  Nunavut and in the Yukon | Nunavut and the Yukon
+Difficulty: easy
+
+QuestionID: 1999-W39-3-1
+Question: How many tries did it take New Democratic Party leader Gary Doer to become premier of Manitoba?
+Answer: four
+Difficulty: easy
+
+QuestionID: 1999-W39-3-2
+Question: What has Conservative party leader Gary Filmon announced?
+Answer: he will now retire from politics
+Difficulty: easy
+
+QuestionID: 1999-W39-3-4
+Question: What has Doer promised to get rid of?
+Answer: hallway medicine
+Difficulty: easy
+
+QuestionID: 1999-W39-3-5
+Question: How many seats has the NDP officially won?
+Answer: 31
+Difficulty: easy
+
+QuestionID: 1999-W39-3-6
+Question: Where will a recount take place?
+Answer: in the suburban Winnipeg riding of Assiniboia | Assiniboia
+Difficulty: moderate
+
+QuestionID: 1999-W39-3-7
+Question: Who defeated the NDP's Jim Rondeau by 3 votes?
+Answer: Tory Linda McIntosh
+Difficulty: easy
+
+QuestionID: 1999-W39-3-8
+Question: What per cent of the popular vote did the NDP take?
+Answer: 45
+Difficulty: easy
+
+QuestionID: 1999-W39-3-9
+Question: When did Howard Pawley sweep Conservative leader Sterling Lyon out of power?
+Answer: in 1981 | 1981
+Difficulty: easy
+
+QuestionID: 1999-W39-5-1
+Question: Why were the students protesting?
+Answer: the lack of extra-curricular activities in schools
+Difficulty: easy
+
+QuestionID: 1999-W39-5-3
+Question: How are Montreal teachers pressuring the provincial government?
+Answer: by refusing to do any activities that are not paid
+Difficulty: moderate
+
+QuestionID: 1999-W39-5-4
+Question: How large a fine do the students who are arrested face?
+Answer: $100
+Difficulty: easy
+
+QuestionID: 1999-W39-5-5
+Question: Who says the disorganized protests are becoming dangerous?
+Answer: deputy police director Serge Meloche
+Difficulty: easy
+
+QuestionID: 1999-W39-5-6
+Question: When did students begin to take to the streets of Quebec to express their frustrations?
+Answer: during the past few days
+Difficulty: moderate
+
+QuestionID: 1999-W39-5-7
+Question: What did police get pelted with during the demonstrations?
+Answer: rocks and garbage
+Difficulty: easy
+
+QuestionID: 1999-W39-5-8
+Question: Where did students rove?
+Answer: between two east-end high schools
+Difficulty: easy
+
+QuestionID: 1999-W41-3-1
+Question: Where did the two trains collide?
+Answer: three kilometres west of London's Paddington Station
+Difficulty: easy
+
+QuestionID: 1999-W41-3-2
+Question: At what time did the trains collide?
+Answer: 8:11 a.m.
+Difficulty: easy
+
+QuestionID: 1999-W41-3-3
+Question: Who said the initial investigation suggests one of the trains passed warning signals before hitting the other? 
+Answer: a British Broadcasting System reporter
+Difficulty: moderate
+
+QuestionID: 1999-W41-3-4
+Question: Why did rescue workers pick through the wreckage?
+Answer: trying to account for missing passengers
+Difficulty: moderate
+
+QuestionID: 1999-W41-3-5
+Question: What companies operate the trains involved in the crash?
+Answer: Great Western and Thames Trains
+Difficulty: easy
+
+QuestionID: 1999-W41-3-6
+Question: How many people might have been on the Great Western train?
+Answer: as many as 500
+Difficulty: easy
+
+QuestionID: 1999-W41-3-7
+Question: Where did the Great Western train originate from?
+Answer:  Cheltenham | Cheltenham, northwest of London 
+Difficulty: easy
+
+QuestionID: 1999-W41-3-8
+Question: How fast were the two trains going when they hit one another?
+Answer: about 100 km/h
+Difficulty: easy
+
+QuestionID: 1999-W41-3-9
+Question: What is a way of daily life for many people in London and the surrounding communities?
+Answer: rail travel
+Difficulty: moderate
+
+QuestionID: 1999-W41-5-1
+Question: Who delivered the Oath of Office to Adrienne Clarkson?
+Answer: Supreme Court of Canada Justice Claire L'Heureux Dube
+Difficulty: moderate
+
+QuestionID: 1999-W41-5-2
+Question: Where did the swearing-in of Ms. Clarkson take place?
+Answer: Ottawa | in front of Supreme Court of Canada
+Difficulty: moderate
+
+QuestionID: 1999-W41-5-3
+Question: While in office, what title does Ms. Clarkson assume?
+Answer: Excellency
+Difficulty: easy
+
+QuestionID: 1999-W41-5-5
+Question: Who did Ms. Clarkson praise during her speech?
+Answer: her 92-year-old father and her mother
+Difficulty: moderate
+
+QuestionID: 1999-W41-5-6
+Question: When did Ms. Clarkson's family arrive in Canada?
+Answer: 1942
+Difficulty: easy
+
+QuestionID: 1999-W41-5-8
+Question: How did Ms. Clarkson say her teachers treated her?
+Answer: "as bright, not bright yellow"
+Difficulty: moderate
+
+QuestionID: 1999-W41-5-9
+Question: As Governor General, who does Ms. Clarkson represent?
+Answer: the Queen of England
+Difficulty: easy
+
+QuestionID: 1999-W41-5-10
+Question: As Governor General, Ms. Clarkson presides over the swearing-in of what Canadian officials?
+Answer: the Prime Minister, the Chief Justice of Canada and cabinet ministers
+Difficulty: moderate
+
+QuestionID: 1999-W43-5-1
+Question: What is the Youth News Network?
+Answer: a news show that airs in some Canadian schools
+Difficulty: easy
+
+QuestionID: 1999-W43-5-2
+Question: Why does YNN give schools free equipment like televisions and computers?
+Answer: to make sure it has an audience for its commercial news service
+Difficulty: moderate
+
+QuestionID: 1999-W43-5-3
+Question: How does YNN make a profit?
+Answer: by selling advertising space
+Difficulty: easy
+
+QuestionID: 1999-W43-5-4
+Question: How many minutes of commercials are in YNN's 12-minute daily feature?
+Answer: two and one-half | two and one-half minutes
+Difficulty: moderate
+
+QuestionID: 1999-W43-5-6
+Question: Who said, "We will not have commercials and products being sold in the classrooms"?
+Answer: Education Minister Drew Caldwell
+Difficulty: easy
+
+QuestionID: 1999-W43-5-7
+Question: What company runs YNN?
+Answer: Montreal-based Athena Educational Partners | Athena Educational Partners
+Difficulty: moderate
+
+QuestionID: 1999-W43-5-8
+Question: Which provinces rejected the idea of having YNN in the classrooms?
+Answer: British Columbia, Nova Scotia and New Brunswick
+Difficulty: moderate
+
+QuestionID: 1999-W43-5-9
+Question: On what basis did eight schools in Manitoba agree to show the YNN program?
+Answer: on a six-month trial basis
+Difficulty: moderate
+
+QuestionID: 1999-W45-5-1
+Question: Where did Susan Aglukark's family eventually settle?
+Answer: Arviat, Northwest Territories
+Difficulty: easy
+
+QuestionID: 1999-W45-5-2
+Question: Who donated the pizza and the $10,000 cheque to Inuksuk High School?
+Answer: the Canadian Academy of Recording Arts and Sciences
+Difficulty: moderate
+
+QuestionID: 1999-W45-5-3
+Question: Why did Canadian singer Susan Aglukark make a special appearance at Inuksuk High School?
+Answer: to present officials with a $10,000 cheque for the purchase of music instruments
+Difficulty: moderate
+
+QuestionID: 1999-W45-5-4
+Question: How long has Inuksuk High School been without a music program?
+Answer: about 10 years
+Difficulty: easy
+
+QuestionID: 1999-W45-5-5
+Question: Who should the music society and school provide instruments for, according to Ryan MacLeod?
+Answer: for some students where food and shelter is a more pressing concern
+Difficulty: moderate
+
+QuestionID: 1999-W45-5-6
+Question: When did the new musical instruments begin arriving at the high school?
+Answer: at the beginning of the school year
+Difficulty: easy
+
+QuestionID: 1999-W45-5-7
+Question: What proportion of the school's population is enrolled in music classes at Inuksuk?
+Answer: about a quarter
+Difficulty: moderate
+
+QuestionID: 1999-W45-5-8
+Question: How many students commonly share a single musical instrument?
+Answer: two or three
+Difficulty: easy
+
+QuestionID: 1999-W45-5-9
+Question: Who will be able to use the school's instruments?
+Answer: the music society
+Difficulty: easy
+
+QuestionID: 1999-W47-5-2
+Question: Where in China did the woman come from?
+Answer: Fujian province
+Difficulty: easy
+
+QuestionID: 1999-W47-5-3
+Question: Why can't the woman be identified by name?
+Answer: because of a legal order
+Difficulty: easy
+
+QuestionID: 1999-W47-5-4
+Question: How many other people arrived in Canada with the woman?
+Answer: 32
+Difficulty: easy
+
+QuestionID: 1999-W47-5-5
+Question: What will happen to the Chinese people whose requests for refugee status fail?
+Answer: they will be sent back to China
+Difficulty: moderate
+
+QuestionID: 1999-W47-5-6
+Question: When did the woman get pregnant for the second time?
+Answer: seven years ago
+Difficulty: easy
+
+QuestionID: 1999-W47-5-7
+Question: How many children are Chinese couples allowed to have?
+Answer: one
+Difficulty: easy
+
+QuestionID: 1999-W47-5-9
+Question: What will happen to the woman if she returns to China?
+Answer: she will be sterilized
+Difficulty: moderate
+
+QuestionID: 1999-W47-5-11
+Question: Who is Larry Smeets?
+Answer: the lawyer representing the Chinese woman from Fujian
+Difficulty: easy
+
+QuestionID: 1999-W49-5-1
+Question: What about Mars made skywatchers in ancient Greece and Rome think of their god of war?
+Answer: the planet's fiery red hue
+Difficulty: easy
+
+QuestionID: 1999-W49-5-3
+Question: How is the Polar Lander being navigated?
+Answer: by radio signals from the Jet Propulsion Laboratory
+Difficulty: easy
+
+QuestionID: 1999-W49-5-4
+Question: Who first proposed including a microphone on a spacecraft sent to Mars?
+Answer: astronomer Carl Sagan
+Difficulty: easy
+
+QuestionID: 1999-W49-5-5
+Question: What are scientists afraid the costly mission could do?
+Answer: hit a rock or lose contact with NASA scientists back home
+Difficulty: moderate
+
+QuestionID: 1999-W49-5-6
+Question: Where on Mars do scientists know there is frozen water?
+Answer: in its northern ice cap
+Difficulty: moderate
+
+QuestionID: 1999-W49-5-8
+Question: Where on Mars do scientists think there may be more water?
+Answer: underground
+Difficulty: moderate
+
+QuestionID: 1999-W49-5-10
+Question: What can the Polar Lander's instruments not detect?
+Answer: fossils or living organisms
+Difficulty: moderate
+
+QuestionID: 1999-W51-1-1
+Question: What kind of lawsuit was filed against Sarah McLachlan?
+Answer: copyight
+Difficulty: easy
+
+QuestionID: 1999-W51-1-2
+Question: How did McLachlan feel about the suit being thrown out?
+Answer: very relieved
+Difficulty: easy
+
+QuestionID: 1999-W51-1-3
+Question: Who dismissed the lawsuit?
+Answer: British Columbia Supreme Court Justice Bruce Cohen
+Difficulty: easy
+
+QuestionID: 1999-W51-1-5
+Question: Where did McLachlan move from?
+Answer: Halifax, Nova Scotia
+Difficulty: moderate
+
+QuestionID: 1999-W51-1-6
+Question: Why was Bruce Neudorf hired, according to McLachlan?
+Answer: to help McLachlan pursue a career as a recording artist | to do pre-production work
+Difficulty: moderate
+
+QuestionID: 1999-W51-1-7
+Question: What did Neudorf claim he did not receive from McLachlan?
+Answer: proper royalties for producing "Touch"
+Difficulty: moderate
+
+QuestionID: 1999-W51-1-8
+Question: How many copies of the album "Touch" were sold?
+Answer: 625,000
+Difficulty: easy
+
+QuestionID: 1999-W51-1-9
+Question: What concert series did McLachlan mastermind?
+Answer: Lilith Fair
+Difficulty: easy
+
+QuestionID: 1999-W51-1-10
+Question: What did McLachlan occasionally do during the trial?
+Answer: sang and played keyboard | sang and played keyboard before the court staff
+Difficulty: easy
+
+QuestionID: 2000-W02-3-1
+Question: Where has the Newfoundland government found tap water contaminated?
+Answer: in 63 communities
+Difficulty: easy
+
+QuestionID: 2000-W02-3-2
+Question: How are trihalomethanes formed?
+Answer: when tiny amounts of chlorine are added to drinking water
+Difficulty: moderate
+
+QuestionID: 2000-W02-3-3
+Question: Which towns face the danger of THMs in drinking water?
+Answer: mainly small towns that can't afford expensive water filtration systems
+Difficulty: moderate
+
+QuestionID: 2000-W02-3-4
+Question: Why do microbiological organisms have to be removed from water?
+Answer: to prevent the outbreak of diseases such as typhoid fever and cholera
+Difficulty: moderate
+
+QuestionID: 2000-W02-3-8
+Question: According to Fogo town manager Bruce Pomeroy, when should the government have made everyone aware if there were risks from THMs?
+Answer: two years ago
+Difficulty: moderate
+
+QuestionID: 2000-W02-3-9
+Question: If water is left in an opened container for 24 hours, what happens to many of the chemicals?
+Answer: they evaporate | evaporate
+Difficulty: easy
+
+QuestionID: 2000-W02-3-10
+Question: What does charcoal do to chemicals in water?
+Answer: absorbs them
+Difficulty: moderate
+
+QuestionID: 2000-W02-5-1
+Question: When did reports of a crisis on Canadian farms first become national news?
+Answer: the Fall of 1998 | 1998
+Difficulty: easy
+
+QuestionID: 2000-W02-5-2
+Question: Where is the Family Farm Tribute concert being held?
+Answer: Toronto | Toronto, Canada
+Difficulty: moderate
+
+QuestionID: 2000-W02-5-3
+Question: What is the Family Farm Tribute concert meant to do?
+Answer: open people's eyes to the growing farm crisis in Canada
+Difficulty: moderate
+
+QuestionID: 2000-W02-5-5
+Question: What two things will the Family Farm Tribute concert achieve, according to organizer Dennis Mills?
+Answer: it will bring rural problems to the attention of an urban audience, and it will show the country that Toronto cares
+Difficulty: moderate
+
+QuestionID: 2000-W02-5-8
+Question: Who is meeting in Ottawa, Ontario, to work out a new aid package for cash-strapped farmers?
+Answer: Federal Agriculture Minister Lyle Vanclief and his provincial counterparts
+Difficulty: easy
+
+QuestionID: 2000-W03-1-1
+Question: Who did John Morris Rankin play for?
+Answer: the Rankins |  the former Celtic group the Rankins
+Difficulty: Moderate
+
+QuestionID: 2000-W03-1-2
+Question: How many records did his musical group sell?
+Answer: more than two million
+Difficulty: Moderate
+
+QuestionID: 2000-W03-1-3
+Question: What is hypothermia?
+Answer: when one's body temperature drops abnormally low 
+Difficulty: Easy
+
+QuestionID: 2000-W03-1-4
+Question: When did John Morris Rankin tell the teenagers to jump out of the truck?
+Answer: as the truck skidded towards the water
+Difficulty: Moderate
+
+QuestionID: 2000-W03-1-5
+Question: Where was Jimmy Rankin when he heard the news of his brother's death?
+Answer: a Farm Aid concert in Toronto | a Farm Aid concert| Toronto
+Difficulty: Easy
+
+QuestionID: 2000-W03-1-6
+Question: What musical instruments did John Morris Rankin play?
+Answer: fiddle and piano | keyboard and fiddle
+Difficulty: Easy
+
+QuestionID: 2000-W03-1-7
+Question: How old is Molly Rankin?
+Answer: 13
+Difficulty: Easy
+
+QuestionID: 2000-W03-1-8
+Question: Who is the lead vocalist of Prairie Oyster?
+Answer: Russell De Carle
+Difficulty: Moderate
+
+QuestionID: 2000-W03-1-9
+Question: Who is Denis Ryan?
+Answer: friend of the Rankin family | musician | someone who played music with Rankin in the mid '80s. 
+Difficulty: Easy
+
+QuestionID: 2000-W03-1-10
+Question: Why did Rankin's musical group break up?
+Answer: so its members could pursue independent careers and interests
+Difficulty: Moderate
+
+QuestionID: 2000-W03-2-1
+Question: When was the Polar Lander supposed to have landed?
+Answer: December 3, 1999
+Difficulty: Moderate
+
+QuestionID: 2000-W03-2-2
+Question: Who is the Polar Lander's project manager?
+Answer: Richard Cook
+Difficulty: Easy
+
+QuestionID: 2000-W03-2-3
+Question: Where on Mars was the spacecaft supposed to touch down?
+Answer: near Mars' south pole
+Difficulty: Moderate
+
+QuestionID: 2000-W03-2-4
+Question: What did the Mars Global Surveyor do?
+Answer: took high-resolution images of the planned Polar Lander landing site | searched for signs of the lander
+Difficulty: Easy
+
+QuestionID: 2000-W03-2-5
+Question: What was the mission of the Mars Polar Lander?
+Answer: study Mars' atmosphere and search for water
+Difficulty: Easy
+
+QuestionID: 2000-W03-2-7
+Question: How much did the Polar Lander mission cost?
+Answer: more than $200 million dollars
+Difficulty: Easy
+
+QuestionID: 2000-W03-2-8
+Question: How much did the Polar Lander weigh?
+Answer: 576 kilograms
+Difficulty: Easy
+
+QuestionID: 2000-W03-2-9
+Question: What part of next year's mission might be cancelled?
+Answer: the lander
+Difficulty: Moderate
+
+QuestionID: 2000-W03-2-11
+Question: How many legs did the Mars Polar Lander have?
+Answer: three
+Difficulty: Easy
+
+QuestionID: 2000-W03-3-2
+Question: Where will the money come from that the government gives to the hockey teams
+Answer: taxpayers
+Difficulty: Easy
+
+QuestionID: 2000-W03-3-3
+Question: Why did Canadian hockey teams threaten to move to America?
+Answer: they were going broke | business is better in America | money
+Difficulty: Moderate
+
+QuestionID: 2000-W03-3-4
+Question: How much does the average Canadian NHL player make in a season?
+Answer: 1.3 million dollars
+Difficulty: Easy
+
+QuestionID: 2000-W03-3-5
+Question: What is Pavel Bure's occupation?
+Answer: hockey player
+Difficulty: Moderate
+
+QuestionID: 2000-W03-3-6
+Question: What is a subsidy?
+Answer: money given to help someone out
+Difficulty: Easy
+
+QuestionID: 2000-W03-3-7
+Question: What is Glenroy Gilbert doing in Texas?
+Answer: training for the Sydney Olympics
+Difficulty: Moderate
+
+QuestionID: 2000-W03-3-8
+Question: Who is the Manitoba Agriculture Minister?
+Answer: Rosann Wowchuk 
+Difficulty: Easy
+
+QuestionID: 2000-W03-3-9
+Question: What does Frank Gilbert think about giving money to NHL teams?
+Answer: It's fine, as long as the poor are taken care of first.
+Difficulty: Moderate
+
+QuestionID: 2000-W03-3-10
+Question: When will the government subsidy plan end?
+Answer: in four years
+Difficulty: Moderate
+
+QuestionID: 2000-W05-4-1
+Question: Why did some members of the Hindu religion destroy the sets for the movie, Water, by Deepa Mehta?
+Answer: they accuse Mehta of insulting Hindu traditions
+Difficulty: moderate
+
+QuestionID: 2000-W05-4-2
+Question: What are the other two films in Mehta's trilogy?
+Answer: Earth and Fire
+Difficulty: easy
+
+QuestionID: 2000-W05-4-3
+Question: From whom did Mehta obtain permission to shoot the film Water?
+Answer: the Indian federal Information and Broadcasting Ministry and the government of the state where the film is being shot
+Difficulty: moderate
+
+QuestionID: 2000-W05-4-4
+Question: What are fundamentalists?
+Answer: strongly religious people who refuse anything that disagrees with their faith
+Difficulty: easy
+
+QuestionID: 2000-W05-4-5
+Question: Where was the film Water being shot?
+Answer: Varanasi
+Difficulty: moderate
+
+QuestionID: 2000-W05-4-6
+Question: How much money did the attack cost the production of the movie?
+Answer: about a million dollars
+Difficulty: easy
+
+QuestionID: 2000-W05-4-7
+Question: What was Mehta's film, Fire, about?
+Answer: the relationship of two women caught in unhappy marriages
+Difficulty: easy
+
+QuestionID: 2000-W05-4-8
+Question: When was India partitioned?
+Answer: 1947
+Difficulty: easy
+
+QuestionID: 2000-W05-4-9
+Question: Who organized huge protests that forced the British to hand over power?
+Answer: Mahatma Ghandi
+Difficulty: easy
+
+QuestionID: 2000-W06-5-1
+Question: Where is Ross Watson a town councillor?
+Answer: Cochrane, Alberta
+Difficulty: easy
+
+QuestionID: 2000-W06-5-2
+Question: Whom does Watson plan to join on a journey to the top of the 5,945-metre Mount Logan?
+Answer: six other climbers
+Difficulty: easy
+
+QuestionID: 2000-W06-5-3
+Question: Where is Mt. Logan?
+Answer: in the Yukon Territory | Yukon Territory
+Difficulty: easy
+
+QuestionID: 2000-W06-5-4
+Question: How does Watson describe himself as a climber?
+Answer: as a "scrambler"
+Difficulty: easy 
+
+QuestionID: 2000-W06-5-5
+Question: What does Watson say is more of a challenge in climbing than his blindness?
+Answer: his lack of technical climbing ability
+Difficulty: easy
+
+QuestionID: 2000-W06-5-6
+Question: When was Watson part of a team that attempted to climb Mt. McKinley?
+Answer: ten years ago
+Difficulty: easy
+
+QuestionID: 2000-W06-5-7
+Question: Why do sighted people get scared when they are climbing, according to one of Watson's fellow climbers?
+Answer: "When (sighted people) are climbing, we look down and we get scared because the wrong messages are rolling through our head"
+Difficulty: moderate
+
+QuestionID: 2000-W06-5-8
+Question: When did Watson lose his sight?
+Answer: at age 12
+Difficulty: easy
+
+QuestionID: 2000-W06-5-9
+Question: How did Watson lose his vision?
+Answer: from a pellet gun
+Difficulty: easy
+
+QuestionID: 2000-W06-5-10
+Question: What other mountain would Watson like to climb after Mt. Logan?
+Answer: Mt. Everest
+Difficulty: easy
+
+QuestionID: 2000-W07-5-1
+Question: What party does Joerg Haider lead in Austria?
+Answer: Freedom Party
+Difficulty: easy
+
+QuestionID: 2000-W07-5-2
+Question: Where did Haider fly out of?
+Answer: Montreal, Quebec's Dorval airport | Montreal
+Difficulty: easy
+
+QuestionID: 2000-W07-5-3
+Question: What is Haider accused of being?
+Answer: a Nazi sympathizer
+Difficulty: easy
+
+QuestionID: 2000-W07-5-5
+Question: Who condemned Haider's visit to Canada?
+Answer: Jewish and human rights groups in Canada and the United States
+Difficulty: easy
+
+QuestionID: 2000-W07-5-6
+Question: According to Rabbi Marvin Hier, why had Haider had flown to Canada?
+Answer: to try to attend the wedding of a well known Hasidic leader's relative
+Difficulty: moderate
+
+QuestionID: 2000-W07-5-7
+Question: Why are Hasidic Jews the most visible members of the Jewish community?
+Answer: because even their clothes reflect their beliefs
+Difficulty: easy
+
+QuestionID: 2000-W07-5-8
+Question: How many families are in the Tash Hasidic community in a suburb of Montreal?
+Answer: 300
+Difficulty: easy
+
+QuestionID: 2000-W07-5-9
+Question: Where was Haider photographed playfully juggling a snowball?
+Answer: at the memorial to Raoul Wallenberg
+Difficulty: easy
+

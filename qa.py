@@ -3,6 +3,7 @@ import spacy
 import nltk
 from nltk import word_tokenize
 import operator
+import collections
 
 class Word:
     def __init__(self, name):
@@ -31,9 +32,9 @@ question_map = {"how tall": ['QUANTITY'], "who" : ['PERSON','ORGANIZATION'],"whe
 nlp = spacy.load('en_core_web_sm')
 # question_map = {}
 
-def input_file_contents():
-    #    file = open(sys.argv[1], "r")
-    input_file = open("all_input_file.txt", "r")
+def input_file_contents(filename):
+    input_file = open(filename, "r")
+    # input_file = open("all_input_file.txt", "r")
     file_contents = input_file.read()
     file_contents = file_contents.split('\n')
     #    print(file_contents)
@@ -143,11 +144,30 @@ def extractpos(question):
 
 
 
-def matchOrSimilarity(array, word):
+# def matchOrSimilarity(array, word):
+#     for wordobject in array:
+#         if wordobject == word.lemma:
+#             # print("Match")
+#             return True
+
+
+def matchOrSimilarity(array, word, tf_dict):
+    prob = 0
+    print(word.word_name, word.pos)
+    
+    # Check if word in question lemmas array
     for wordobject in array:
         if wordobject == word.lemma:
             # print("Match")
-            return True
+            if word.word_name != "." and word.word_name != "," and word.word_name != "-" and word.word_name != "\"" and word.word_name != "'s" and word.word_name != "'nt" and word.word_name != "...":
+                count = sum(tf_dict.values())
+                maximum_val = max(tf_dict.values())
+                count_word = tf_dict[word.word_name]
+                prob += 1- (count_word/maximum_val)
+            # Check if verb
+            if word.pos == "VERB":
+                prob+= 3
+    return prob            
 
         # Word similarity
         # word1 = nlp(wordobject)
@@ -249,14 +269,17 @@ def whenqs(overlapCount, matches, sentence_details_array, question_lem_arr):
                 break
     return score
 
-def whyqs(sentence_details_array, question_lem_arr):
+def whyqs(sentence_details_array, question_lem_arr, tf_dict):
     for index in range(0,len(sentence_details_array)):
         record = sentence_details_array
         record[index].count = 0
         for word in record[index].sentence[1]:
-            if matchOrSimilarity(question_lem_arr, word):
-                record[index].count += 1
-        record[index].score = record[index].count*3
+            # if matchOrSimilarity(question_lem_arr, word):
+            #     record[index].count += 1
+            
+            prob = matchOrSimilarity(question_lem_arr, word, tf_dict)
+            record[index].count += prob
+            record[index].score = record[index].count*3
 
     answer = None
     max_score = 0    
@@ -284,7 +307,7 @@ def whyqs(sentence_details_array, question_lem_arr):
         return answer[index:]
     return answer
 
-def whatqs(sentence_details_array, question_lem_arr, original_question_string):
+def whatqs(sentence_details_array, question_lem_arr, original_question_string, tf_dict):
     question_ners = nlp(original_question_string).ents
     question_ner_list = []
     for each in question_ners:
@@ -297,9 +320,15 @@ def whatqs(sentence_details_array, question_lem_arr, original_question_string):
         record = sentence_details_array
         record[index].count = 0
         for word in record[index].sentence[1]:
-            if matchOrSimilarity(question_lem_arr, word):
-                record[index].count += 1
-                record[index].score +=3
+            # if matchOrSimilarity(question_lem_arr, word):
+            #     record[index].count += 1
+            #     record[index].score +=3
+            
+            prob = matchOrSimilarity(question_lem_arr, word, tf_dict)
+            record[index].count += prob
+            
+            if record[index].count > 0:
+                record[index].score +=3                    
             if ('DATE' in question_ner_list) and ('today' in record[index].sentence[0] or 'yesterday' in record[0].sentence[0] or 'tomorrow' in record[0].sentence[0] or 'last night' in record[0].sentence[0]) :
                 record[index].score +=6
             if ('kind' in question_lem_arr) and ('call' in record[index].sentence[0] or 'from' in record[0].sentence[0]):
@@ -340,7 +369,6 @@ def find_answer_from_sentence(answer_list, type, original_question_string):
     #     return answer_substring
     if type == "where":
         location_preps = ["in", "at", "near", "inside"]
-
         found_index = -1
         ner_list = sent.ents
         found_flag = False
@@ -460,7 +488,7 @@ def find_answer_from_sentence(answer_list, type, original_question_string):
             answer_substring = answer_list
         return answer_substring    
 
-def overlap(question, sentence_details_array, expected_answer_type, rootverb, original_question_string):
+def overlap(question, sentence_details_array, expected_answer_type, rootverb, original_question_string, tf_dict):
     question_lem_arr = []
     answer_list = ""
 
@@ -472,15 +500,18 @@ def overlap(question, sentence_details_array, expected_answer_type, rootverb, or
     when_ans = {}
     how_ans = {}
     if 'why' in question_lem_arr:
-        return whyqs(sentence_details_array, question_lem_arr)
+        return whyqs(sentence_details_array, question_lem_arr, tf_dict)
     elif 'what' in question_lem_arr:
-        return whatqs(sentence_details_array, question_lem_arr, original_question_string)            
+        return whatqs(sentence_details_array, question_lem_arr, original_question_string, tf_dict)            
     for record in sentence_details_array:
         verbMatchCnt = 0
         record.count = 0
         for word in record.sentence[1]:
-            if matchOrSimilarity(question_lem_arr, word):
-                record.count += 1
+            # if matchOrSimilarity(question_lem_arr, word):
+            #     record.count += 1
+            
+            prob = matchOrSimilarity(question_lem_arr, word, tf_dict)
+            record.count += prob
             if word.lemma == rootverb:
                 verbMatchCnt += 1
         nerlist = []
@@ -550,7 +581,7 @@ def overlap(question, sentence_details_array, expected_answer_type, rootverb, or
     return answer_list
 
 
-def find_answer(qid, question, sentence_details_array, question_dict):
+def find_answer(qid, question, sentence_details_array, question_dict, tf_dict):
     # print(qid)
     # print(question)
     question = question.split(":")
@@ -562,7 +593,7 @@ def find_answer(qid, question, sentence_details_array, question_dict):
     # print("Direct Object:", dobject)
     # print("Indirect Object:", idobject)
     # print("Root:", rootverb)
-    answer_list = overlap(question_arr, sentence_details_array, expected_answer_type, rootverb, original_question)
+    answer_list = overlap(question_arr, sentence_details_array, expected_answer_type, rootverb, original_question, tf_dict)
     answer = ""
     if answer_list != "":
         question_dict[qid] = [question, answer_list]
@@ -584,7 +615,7 @@ def find_answer(qid, question, sentence_details_array, question_dict):
     return "\n" + header + answer
 
 
-def process_question(question_data, output_stream, sentence_details_array, question_dict):
+def process_question(question_data, output_stream, sentence_details_array, question_dict, tf_dict):
     newline = "\n"
     question_id = "QuestionID"
     question = "Question:"
@@ -596,7 +627,7 @@ def process_question(question_data, output_stream, sentence_details_array, quest
             output_stream.write(each)
         if question in each:
             # print(each)
-            answer = find_answer(qid, each, sentence_details_array, question_dict)
+            answer = find_answer(qid, each, sentence_details_array, question_dict, tf_dict)
             # print(answer)
             output_stream.write(answer)
             output_stream.write(newline + newline)
@@ -655,6 +686,17 @@ def check_accuracy(question_dict, answer_dict, accuracy):
             accuracy+=1
         return accuracy    
 
+def gettf(story_data):
+    story = story_data.split('\n\n')
+    story = story[2:]
+    story = ' '.join(story)
+    story = story.replace('\n', ' ')
+    story = story.replace('.\"', ". \"")
+    story = story.split()
+    c = collections.Counter(story)
+    return c
+
+
 def fetch_file_data_and_process(input_file_data, output_stream, answer_key):
     directory_path = input_file_data[0]
     accuracy =0
@@ -668,12 +710,15 @@ def fetch_file_data_and_process(input_file_data, output_stream, answer_key):
         filename_path_story = filename_path + ".story"
         story_data = open(filename_path_story, "r").read()
         story, sentence_details_array = get_story_data(story_data)
+        tf_dict = gettf(story_data)
+        print(tf_dict)
+        print(max(tf_dict.values()))
 
         # ------ QUESTIONS ------
         question_dict = {}
         filename_path_questions = filename_path + ".questions"
         question_data = open(filename_path_questions, "r").read()
-        process_question(question_data, output_stream, sentence_details_array, question_dict)
+        process_question(question_data, output_stream, sentence_details_array, question_dict, tf_dict)
     
         # ------ ANSWERS ------
         answer_dict = {}
@@ -712,9 +757,10 @@ def fetch_file_data_and_process(input_file_data, output_stream, answer_key):
     # print("Percentage accuracy: ", (accuracy/total)*100)
             
 def main():
-    input_file_data = input_file_contents()
-    output_stream = open("output.txt", "w")
-    answer_key = open("answerkey.txt", "w")
+    filename = sys.argv[1]
+    input_file_data = input_file_contents(filename)
+    output_stream = open("output_test.txt", "w")
+    answer_key = open("answerkey_test.txt", "w")
     # get_questions_map("question_types.txt")
     fetch_file_data_and_process(input_file_data, output_stream, answer_key)
     output_stream.close()
