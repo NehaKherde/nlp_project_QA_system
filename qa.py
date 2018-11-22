@@ -4,12 +4,15 @@ import nltk
 from nltk import word_tokenize
 import operator
 import collections
+from nltk.corpus import wordnet as wn
 
 class Word:
     def __init__(self, name):
         self.word_name = name
         self.pos = ""
         self.lemma = ""
+        self.tag = ""
+        self.dep = ""
 
 class SentenceDetails:
     def __init__(self):
@@ -24,7 +27,7 @@ class SentenceDetails:
 #                 "how long" : ["QUANTITY", "DATE"], "how old" : ["DATE"], "how often" : ["DATE"],
 #                 "how far" : ["TIME", "QUANTITY"]}
 
-question_map = {"how tall": ['QUANTITY'], "who" : ['PERSON','ORGANIZATION'],"when" : ['DATE', 'TIME'],
+question_map = {"how tall": ['QUANTITY'], "who" : ['PERSON','ORG'],"when" : ['DATE', 'TIME'],
                 "where":['LOC', 'GPE'], "how much" : ['PERCENT','MONEY'], "whose":['PERSON'],
                 "how big": ['QUANTITY'], "how many" : ['ORDINAL', "QUANTITY", "CARDINAL"],
                 "how long" : ["QUANTITY", "DATE", "TIME"], "how old" : ["DATE"], "how often" : ["DATE"],
@@ -95,6 +98,8 @@ def get_story_data(story_data):
                 word_obj.pos = word.pos_
                 # Add lemmatization
                 word_obj.lemma = word.lemma_
+                word_obj.tage = word.tag_
+                word_obj.dep = word.dep_
                 each_sentence_array.append(word_obj)
 
         #dictionary[sentence.text] = each_sentence_array
@@ -119,7 +124,7 @@ def extractpos(question):
     indirect_object = None
     direct_object = None
     rootverb = None
-
+    wh_words = ["what", "who", "why", "when", "where", "which", "whose", "how"]
     for word in question_sentence:
         if word.dep_ == "nsubj":
             subject = word.orth_
@@ -131,7 +136,8 @@ def extractpos(question):
             direct_object = word.orth_
         if word.dep_ == "ROOT":
             rootverb = word.lemma_
-        if word.text != '?' and (word.is_stop == False):
+        # if word.text in wh_words or word            
+        if word.text != '?' and ((word.is_stop == False) or (word.text in wh_words)):
             # or (word.is_stop == True and word.pos_ == "VERB"):
             word_obj = Word(word.text)
             # Add pos tagging
@@ -153,8 +159,7 @@ def extractpos(question):
 
 def matchOrSimilarity(array, word, tf_dict):
     prob = 0
-    print(word.word_name, word.pos)
-    
+    # print(word.word_name, word.pos)
     # Check if word in question lemmas array
     for wordobject in array:
         if wordobject == word.lemma:
@@ -166,6 +171,7 @@ def matchOrSimilarity(array, word, tf_dict):
                 prob += 1- (count_word/maximum_val)
             # Check if verb
             if word.pos == "VERB":
+                # print(word.word_name)
                 prob+= 3
     return prob            
 
@@ -269,7 +275,12 @@ def whenqs(overlapCount, matches, sentence_details_array, question_lem_arr):
                 break
     return score
 
-def whyqs(sentence_details_array, question_lem_arr, tf_dict):
+def whyqs(sentence_details_array, question_lem_arr, tf_dict, original_question_string):
+    root = ""
+    question_pos = nlp(original_question_string)
+    for each in question_pos:
+        if each.dep_ == "ROOT":
+            root = each.lemma_
     for index in range(0,len(sentence_details_array)):
         record = sentence_details_array
         record[index].count = 0
@@ -279,6 +290,8 @@ def whyqs(sentence_details_array, question_lem_arr, tf_dict):
             
             prob = matchOrSimilarity(question_lem_arr, word, tf_dict)
             record[index].count += prob
+            # if word.lemma == root:
+            #     record[index].count += 2
             record[index].score = record[index].count*3
 
     answer = None
@@ -296,20 +309,52 @@ def whyqs(sentence_details_array, question_lem_arr, tf_dict):
         if record[index].score > max_score:
             answer = record[index].sentence[0]
             max_score = record[index].score    
+    print("Answer:::::---------------------------------", answer)    
     if 'because' in answer:
         index = answer.index('because')
-        return answer[index:] 
+        return remove_IntersectionFromQuestionAndAnswer(original_question_string, answer[index-1:])
+        # return answer[index:] 
     if 'so' in answer:
         index = answer.index('so')
-        return answer[index:]
+        return remove_IntersectionFromQuestionAndAnswer(original_question_string, answer[index-1:])
+        # return answer[index:]
     if 'want' in answer:
         index = answer.index('want')
-        return answer[index:]
+        return remove_IntersectionFromQuestionAndAnswer(original_question_string, answer[index-1:])
+        # return answer[index:]
+    if root in answer:
+        index = answer.index(root)
+        return remove_IntersectionFromQuestionAndAnswer(original_question_string, answer[index-1:])
+
+    answer = remove_IntersectionFromQuestionAndAnswer(original_question_string, answer)
     return answer
+
+def remove_IntersectionFromQuestionAndAnswer(question, answer):
+    s = list(set(answer.split()).difference(set(question.split())))
+    result = (" ".join(x for x in s))
+    return result
 
 def whatqs(sentence_details_array, question_lem_arr, original_question_string, tf_dict):
     question_ners = nlp(original_question_string).ents
+    question_pos = nlp(original_question_string)
     question_ner_list = []
+    root = ""
+    print("---------------------------------------------------------------------------------------------------------")
+    print("Q:", original_question_string)
+    for each in question_pos:
+        print(each.text)
+        print("L:",each.lemma_)
+        if each.dep_ == "ROOT" and each.lemma_ != "be":
+            root = each.text
+            print("Root:------------------", each.text)
+    if root == "":
+        print("root empty")
+        for each in question_pos:
+            if each.pos_ == "VERB" and each.lemma_ != "be":
+                root = each.lemma_        
+                break
+
+    print("Question root: ", root)
     for each in question_ners:
         question_ner_list.append(each.label_)
     # print("*************************************")        
@@ -319,34 +364,51 @@ def whatqs(sentence_details_array, question_lem_arr, original_question_string, t
     for index in range(0,len(sentence_details_array)):
         record = sentence_details_array
         record[index].count = 0
+        record[index].score = 0
         for word in record[index].sentence[1]:
             # if matchOrSimilarity(question_lem_arr, word):
             #     record[index].count += 1
             #     record[index].score +=3
             
             prob = matchOrSimilarity(question_lem_arr, word, tf_dict)
-            record[index].count += prob
-            
-            if record[index].count > 0:
-                record[index].score +=3                    
+            record[index].score += prob
+            # for each_word in record[index].sentence[0]:
+            if word.lemma == root:
+                print("Match: +60", word.lemma)
+                print(record[index].sentence[0])
+                record[index].score +=30
+
+            # if record[index].count > 0.8:
+            #     print ( "Match rul1 : + 3")
+            #     record[index].score +=3                    
             if ('DATE' in question_ner_list) and ('today' in record[index].sentence[0] or 'yesterday' in record[0].sentence[0] or 'tomorrow' in record[0].sentence[0] or 'last night' in record[0].sentence[0]) :
+                print ( "Match rul2 : + 6")
                 record[index].score +=6
             if ('kind' in question_lem_arr) and ('call' in record[index].sentence[0] or 'from' in record[0].sentence[0]):
+                print ( "Match rul3 : + 20")
                 record[index].score +=20
             if ('name' in question_lem_arr) and ('name' in record[index].sentence[0] or 'call' in record[0].sentence[0] or 'known' in record[0].sentence[0]):    
+                print ( "Match rul4 : + 20")
                 record[index].score +=20
-            if record[index].score > max_score:
-                answer = record[index].sentence[0]
-                max_score = record[index].score    
+        if record[index].score > max_score:
+            answer = record[index].sentence[0]
+            max_score = record[index].score   
+        print("Ans:", record[index].sentence[0])
+        print("Score: ", record[index].score)                 
+    answer = remove_IntersectionFromQuestionAndAnswer(original_question_string, answer)
     return answer
     
         # print(record[index].sentence[0])
         # print(record[index].score)
+def get_index_of_who(question_arr):
+    for i in range(len(question_arr)):
+        if question_arr[i].lemma == "who":
+            return i
 
 def find_answer_from_sentence(answer_list, type, original_question_string):
     answer_substring = ""
     sent = nlp(answer_list)
-
+    subject, dobject, idobject, rootverb, question_arr, expected_answer_type = extractpos(original_question_string)
     # print("Hey")
     # if type == "where":
     #     location_preps = ["in", "at", "near", "inside"]
@@ -372,6 +434,7 @@ def find_answer_from_sentence(answer_list, type, original_question_string):
         found_index = -1
         ner_list = sent.ents
         found_flag = False
+        found_again = False
         min_index = 10000000
         for location_prep in location_preps:
             if (' ' + location_prep + ' ') in answer_list:
@@ -383,9 +446,13 @@ def find_answer_from_sentence(answer_list, type, original_question_string):
             for each in ner_list:
                 if (each.label_ == 'GPE' or each.label_ == 'LOC') and each.start_char >= min_index:
                     answer_substring = answer_substring + ' ' + each.text
+                    found_again = True
             #answer_substring = answer_list[min_index+1:]
                 # if (each.label_ == 'GPE' or each.label_ == 'LOC') and each.start_char >= found_index:
                 #     answer_substring = answer_substring + ' ' + each.text
+            if found_again == False:
+                answer_substring = answer_list[min_index:]
+                # answer_substring = answer_list
         else:
             answer_substring = answer_list
         return answer_substring
@@ -404,18 +471,55 @@ def find_answer_from_sentence(answer_list, type, original_question_string):
         return answer_list
 
     elif type == "who":
+        # ner_list = nlp(answer_list).ents
+        # added_flag = False
+        # for each in ner_list:
+        #     if (each.label_ == 'PERSON' or each.label_ == 'ORG'):
+        #         if each.text not in original_question_string:
+        #             answer_substring = answer_substring + ' ' + each.text
+        #             added_flag = True
+        #             # print("Substr:",answer_substring)
+        # if added_flag == True:
+        #         # print("Returning: ", answer_substring)
+        #     return answer_substring
+        # return answer_list                
         ner_list = nlp(answer_list).ents
         added_flag = False
+        result_string = ""
+        who_index = get_index_of_who(question_arr)
+        # check if there is verb after who other than [do, is, be] in the quesition
+        if question_arr[who_index+1].pos == "VERB" and question_arr[who_index+1].lemma not in ["will", "do"]:
+            #  check if that verb (lemma) is present in the answer
+            for token in sent:
+                if token.lemma_ == question_arr[who_index+1].lemma:
+                    result = []
+                    if sent[token.i+1].pos_ == "ADP":
+                        # pick the words from ner_list that are after this index and break
+                        for each in ner_list:
+                            if answer_list.find(each.text) > answer_list.find(token.text):
+                                result.append(each)
+                    else:
+                        # pick the words from ner_list that are before this index and break
+                        for each in ner_list:
+                            if answer_list.find(each.text) < answer_list.find(token.text):
+                                result.append(each)
+                    ner_list = result
+                    if len(ner_list) == 0:
+                        # Shrink the answer to before that verb/token
+                        result_string = answer_list[:answer_list.find(token.text)]
+                    break
         for each in ner_list:
-            if (each.label_ == 'PERSON' or each.label_ == 'ORGANIZATION'):
-                answer_substring = answer_substring + ' ' + each.text
-                added_flag = True
+            if each.label_ == 'PERSON' or each.label_ == 'ORG' or each.label_ == 'NORP' or each.label_ == 'GPE':
+                if each.text not in original_question_string:
+                    answer_substring = answer_substring + ' ' + each.text
+                    added_flag = True
                     # print("Substr:",answer_substring)
         if added_flag == True:
                 # print("Returning: ", answer_substring)
             return answer_substring
-        return answer_list                
-
+        if result_string != "":
+            return result_string
+        return answer_list
     # elif type == "how" :
     #     ner_list = nlp(answer_list).ents
     #     # handle case of how tall
@@ -488,19 +592,28 @@ def find_answer_from_sentence(answer_list, type, original_question_string):
             answer_substring = answer_list
         return answer_substring    
 
+# def sentence_similarity(question, probable_ans):
+#     print("-------------------------------------------------")
+#     print("Q:" , question)
+#     print("PA:", probable_ans)
+#     question = nlp(question)
+#     answer = nlp(probable_ans)
+#     score = question.similarity(answer)
+#     print("Score:",score)
+
 def overlap(question, sentence_details_array, expected_answer_type, rootverb, original_question_string, tf_dict):
     question_lem_arr = []
     answer_list = ""
-
     for word in question:
         if word.pos != "PUNCT":
-            question_lem_arr.append(word.lemma)
+            question_lem_arr.append(word.lemma)           
     who_ans = {}
     where_ans = {}
     when_ans = {}
     how_ans = {}
+    
     if 'why' in question_lem_arr:
-        return whyqs(sentence_details_array, question_lem_arr, tf_dict)
+        return whyqs(sentence_details_array, question_lem_arr, tf_dict, original_question_string)
     elif 'what' in question_lem_arr:
         return whatqs(sentence_details_array, question_lem_arr, original_question_string, tf_dict)            
     for record in sentence_details_array:
@@ -711,8 +824,8 @@ def fetch_file_data_and_process(input_file_data, output_stream, answer_key):
         story_data = open(filename_path_story, "r").read()
         story, sentence_details_array = get_story_data(story_data)
         tf_dict = gettf(story_data)
-        print(tf_dict)
-        print(max(tf_dict.values()))
+        # print(tf_dict)
+        # print(max(tf_dict.values()))
 
         # ------ QUESTIONS ------
         question_dict = {}
@@ -726,18 +839,18 @@ def fetch_file_data_and_process(input_file_data, output_stream, answer_key):
         answers_data = open(filename_path_answers, "r").read()
         populate_answer_dict(answers_data, answer_dict)
         answer_key.write(answers_data)
-        # for questionid, quest_ans in question_dict.items():
-        #     print("QID: ",questionid)
-        #     print("Question: ", quest_ans[0])
-        #     answer = answer_dict.get(questionid)
-        #     print("Answer expected:", answer)
-        #     answer_found = quest_ans[1]
-        #     print("Answer found: ", answer_found)
-        #     if checkmatch(answer_found, answer):
-        #         # print("Correct Answer!!!!")
-        #         accuracy+=1
-        # total+=len(question_dict.items())
-        # accuracy_count = 0
+        for questionid, quest_ans in question_dict.items():
+            print("QID: ",questionid)
+            print("Question: ", quest_ans[0])
+            answer = answer_dict.get(questionid)
+            print("Answer expected:", answer)
+            answer_found = quest_ans[1]
+            print("Answer found: ", answer_found)
+            if checkmatch(answer_found, answer):
+                # print("Correct Answer!!!!")
+                accuracy+=1
+        total+=len(question_dict.items())
+        accuracy_count = 0
 
         # accuracy_count = check_accuracy(question_dict, answer_dict, accuracy_count)
         # print("***********************************")
