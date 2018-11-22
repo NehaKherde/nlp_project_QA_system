@@ -4,6 +4,7 @@ import nltk
 from nltk import word_tokenize
 import operator
 import collections
+import re
 from nltk.corpus import wordnet as wn
 
 class Word:
@@ -281,6 +282,12 @@ def whyqs(sentence_details_array, question_lem_arr, tf_dict, original_question_s
     for each in question_pos:
         if each.dep_ == "ROOT":
             root = each.lemma_
+    if root == "":
+        for each in question_pos:
+            if each.pos_ == "VERB" and each.lemma_ != "be":
+                root = each.lemma_        
+                break
+    # print("Root:", root)
     for index in range(0,len(sentence_details_array)):
         record = sentence_details_array
         record[index].count = 0
@@ -330,31 +337,50 @@ def whyqs(sentence_details_array, question_lem_arr, tf_dict, original_question_s
     return answer
 
 def remove_IntersectionFromQuestionAndAnswer(question, answer):
-    s = list(set(answer.split()).difference(set(question.split())))
-    result = (" ".join(x for x in s))
+    # s = list(set(answer.split()).difference(set(question.split())))
+    # result = (" ".join(x for x in s))
+    # return result
+    result = ""
+    question_list = question.split(' ')
+    answer = answer.split(' ')
+    for ans_word in answer:
+        if ans_word.find('(') != -1:
+            ans_word = ans_word.replace('(', '')
+        if ans_word.find(')') != -1:
+            ans_word = ans_word.replace(')', '')
+        if ans_word.find(']') != -1:
+            ans_word = ans_word.replace(']', '')
+        if ans_word.find('[') != -1:
+            ans_word = ans_word.replace('[', '')
+
+        regex_match_word = '\s*'+ ans_word.lower() + '\s*'
+        #if ans_word in question_list:
+        # print(regex_match_word)
+        if re.search(regex_match_word, (' '.join(question_list)).lower()):
+          #  question_list.remove(ans_word)
+            for i in range(len(question_list)):
+                if ans_word.lower() in question_list[i].lower():
+                    question_list.remove(question_list[i])
+                    break
+        else:
+            result = result + ' '+ ans_word
     return result
+   
 
 def whatqs(sentence_details_array, question_lem_arr, original_question_string, tf_dict):
     question_ners = nlp(original_question_string).ents
     question_pos = nlp(original_question_string)
     question_ner_list = []
     root = ""
-    print("---------------------------------------------------------------------------------------------------------")
-    print("Q:", original_question_string)
     for each in question_pos:
-        print(each.text)
-        print("L:",each.lemma_)
         if each.dep_ == "ROOT" and each.lemma_ != "be":
             root = each.text
-            print("Root:------------------", each.text)
     if root == "":
-        print("root empty")
         for each in question_pos:
             if each.pos_ == "VERB" and each.lemma_ != "be":
                 root = each.lemma_        
                 break
 
-    print("Question root: ", root)
     for each in question_ners:
         question_ner_list.append(each.label_)
     # print("*************************************")        
@@ -374,7 +400,6 @@ def whatqs(sentence_details_array, question_lem_arr, original_question_string, t
             record[index].score += prob
             # for each_word in record[index].sentence[0]:
             if word.lemma == root:
-                print("Match: +60", word.lemma)
                 print(record[index].sentence[0])
                 record[index].score +=30
 
@@ -382,19 +407,14 @@ def whatqs(sentence_details_array, question_lem_arr, original_question_string, t
             #     print ( "Match rul1 : + 3")
             #     record[index].score +=3                    
             if ('DATE' in question_ner_list) and ('today' in record[index].sentence[0] or 'yesterday' in record[0].sentence[0] or 'tomorrow' in record[0].sentence[0] or 'last night' in record[0].sentence[0]) :
-                print ( "Match rul2 : + 6")
                 record[index].score +=6
             if ('kind' in question_lem_arr) and ('call' in record[index].sentence[0] or 'from' in record[0].sentence[0]):
-                print ( "Match rul3 : + 20")
                 record[index].score +=20
             if ('name' in question_lem_arr) and ('name' in record[index].sentence[0] or 'call' in record[0].sentence[0] or 'known' in record[0].sentence[0]):    
-                print ( "Match rul4 : + 20")
                 record[index].score +=20
         if record[index].score > max_score:
             answer = record[index].sentence[0]
             max_score = record[index].score   
-        print("Ans:", record[index].sentence[0])
-        print("Score: ", record[index].score)                 
     answer = remove_IntersectionFromQuestionAndAnswer(original_question_string, answer)
     return answer
     
@@ -430,7 +450,7 @@ def find_answer_from_sentence(answer_list, type, original_question_string):
     #         answer_substring = answer_list
     #     return answer_substring
     if type == "where":
-        location_preps = ["in", "at", "near", "inside"]
+        location_preps = ["in", "at", "near", "inside","from"]
         found_index = -1
         ner_list = sent.ents
         found_flag = False
@@ -451,7 +471,10 @@ def find_answer_from_sentence(answer_list, type, original_question_string):
                 # if (each.label_ == 'GPE' or each.label_ == 'LOC') and each.start_char >= found_index:
                 #     answer_substring = answer_substring + ' ' + each.text
             if found_again == False:
-                answer_substring = answer_list[min_index:]
+                if min_index+50 < len(answer_list):
+                    answer_substring = answer_list[min_index:min_index+50]
+                else:
+                    answer_substring = answer_list[min_index:]
                 # answer_substring = answer_list
         else:
             answer_substring = answer_list
