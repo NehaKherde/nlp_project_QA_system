@@ -35,6 +35,7 @@ question_map = {"how tall": ['QUANTITY'], "who" : ['PERSON','ORG'],"when" : ['DA
                 "how far" : ["TIME", "QUANTITY"], "how high": ['QUANTITY'], "how large": ['QUANTITY'], "how deep": ['QUANTITY']}                
 nlp = spacy.load('en_core_web_sm')
 # question_map = {}
+howqs = ["how is", "how could", "how are", "how will", "how might", "how would", "how can", "how to", "how can", "how does", "how did", "how shall", "how have", "how were"]
 
 def input_file_contents(filename):
     input_file = open(filename, "r")
@@ -189,7 +190,7 @@ def checkNer_for_who(sent_nerlist, sentence_record, original_question_string):
     match_count = 0
     question_ners = nlp(original_question_string).ents
     question_ner_list = []
-
+    print(sent_nerlist)
     for each in question_ners:
         question_ner_list.append(each.label_)
 
@@ -197,20 +198,20 @@ def checkNer_for_who(sent_nerlist, sentence_record, original_question_string):
     #     if
     if 'PERSON' not in question_ner_list:
         if 'PERSON' in sent_nerlist or 'FAC' in sent_nerlist:
-            match_count += 6
+            match_count += 2
         if 'name' in sentence_record.sentence[0]:
-            match_count += 4
+            match_count += 1
     elif 'ORG' not in question_ner_list:
         if 'ORG' in sent_nerlist:
-            match_count += 6
+            match_count += 2
         if 'name' in sentence_record.sentence[0]:
-            match_count += 4
+            match_count += 1
 
     #check if NAME or ORG is present in sentence
-    for val in sent_nerlist:
-        if 'PERSON' == val or 'ORG' == val:
-            match_count += 4
-            break
+    # for val in sent_nerlist:
+    #     if 'PERSON' == val or 'ORG' == val:
+    #         match_count += 4
+    #         break
     return match_count
 
 
@@ -450,14 +451,14 @@ def whatqs(sentence_details_array, question_lem_arr, original_question_string, t
         # print("s:", record[index].sentence[0])
         # print("score:", record[index].score)        
     if min_index != 0:
-        print(min_index)
-        if min_index > 20 and (min_index + 50) < len(answer):
-        # if (min_index + 50) < len(answer):
-            print("Original: ", answer)
-            print("New one:", answer[min_index-20: min_index+50])
-            answer = remove_IntersectionFromQuestionAndAnswer(original_question_string, answer[min_index-20: min_index+50])
-        else:   
-            answer = remove_IntersectionFromQuestionAndAnswer(original_question_string, answer)
+        # print(min_index)
+        # if min_index > 20 and (min_index + 50) < len(answer):
+        # # if (min_index + 50) < len(answer):
+        #     print("Original: ", answer)
+        #     print("New one:", answer[min_index-20: min_index+50])
+        #     answer = remove_IntersectionFromQuestionAndAnswer(original_question_string, answer[min_index-20: min_index+50])
+        # else:   
+        answer = remove_IntersectionFromQuestionAndAnswer(original_question_string, answer[min_index:])
     else:   
         answer = remove_IntersectionFromQuestionAndAnswer(original_question_string, answer)
 
@@ -588,6 +589,7 @@ def find_answer_from_sentence(answer_list, type, original_question_string):
                     break
         for each in ner_list:
             if each.label_ == 'PERSON' or each.label_ == 'ORG' or each.label_ == 'NORP' or each.label_ == 'GPE':
+            # if each.label_ == 'PERSON' or each.label_ == 'ORG':
                 if each.text not in original_question_string:
                     answer_substring = answer_substring + ' ' + each.text
                     added_flag = True
@@ -761,19 +763,21 @@ def overlap(question, sentence_details_array, expected_answer_type, rootverb, or
         # if 'how' in question_lem_arr and record.count >= 1 and how_ans != {}:
         #     answer_list = "".join(sorted(how_ans.items(), reverse=True)[0][1][0])
         if "how" in question_lem_arr:
-            if "how does" in original_question_string.lower() or "how is" in original_question_string.lower():
-                answer_list = howDoesqs(sentence_details_array, question_lem_arr, tf_dict, original_question_string)
+            for val in howqs:
+                if val in original_question_string.lower():
+                    answer_list = howDoesqs(sentence_details_array, question_lem_arr, tf_dict, original_question_string)
             if "how did" in original_question_string.lower():
                 answer_list = howDoesqs(sentence_details_array, question_lem_arr, tf_dict, original_question_string)
             else:
                 matches = checkNer(question_lem_arr, nerlist, expected_answer_type)
-                if record.count > 0 and matches != 0:
+                if record.count > 0.5 and matches != 0:
                     how_score = len(matches)+record.count+(verbMatchCnt*5)
                     if how_ans.get(how_score):
                         how_ans[how_score].append(record.sentence[0])
                     else:
                         how_ans[how_score] = [record.sentence[0]]
-                if 'how' in question_lem_arr and record.count >= 1 and how_ans != {}:
+                # if 'how' in question_lem_arr and record.count >= 1 and how_ans != {}:
+                if 'how' in question_lem_arr and how_ans != {}:
                     answer_list = "".join(sorted(how_ans.items(), reverse=True)[0][1][0])
 
         if "where" in question_lem_arr:
@@ -790,10 +794,12 @@ def overlap(question, sentence_details_array, expected_answer_type, rootverb, or
                 print("score", score)
                 where_ans[score] = [record.sentence[0]]
 
-        if 'who' in question_lem_arr and record.count >= 1:
-            #print("Ans: ",record.sentence[0])
+        # matches = 0         
+        # matches = checkNer_for_who(nerlist, record, original_question_string)        
+        if 'who' in question_lem_arr:
+            print("Ans: ",record.sentence[0])
             matches = checkNer_for_who(nerlist, record, original_question_string)
-            verbMatchCnt = verbMatchCnt*5
+            # verbMatchCnt = verbMatchCnt*5
             record_count = record.count * 3
             final_count = matches + record_count + verbMatchCnt
 
@@ -801,10 +807,10 @@ def overlap(question, sentence_details_array, expected_answer_type, rootverb, or
                 who_ans[final_count].append(record.sentence[0])
             else:
                 who_ans[final_count] = [record.sentence[0]]
+            print("Score: ",final_count)   
 
-
-        if 'who' in question_lem_arr and record.count >= 1 and who_ans.items != []:
-            answer_list = "".join(sorted(who_ans.items(), reverse=True)[0][1][0])
+        # if 'who' in question_lem_arr and who_ans.items != []:
+        #     answer_list = "".join(sorted(who_ans.items(), reverse=True)[0][1][0])
 
         if "when" in question_lem_arr:
             matches = checkNer(question_lem_arr, nerlist, expected_answer_type)
@@ -836,6 +842,7 @@ def overlap(question, sentence_details_array, expected_answer_type, rootverb, or
         answer_list = "".join(sorted(where_ans.items(), reverse = True)[0][1][0])
         answer_list = find_answer_from_sentence(answer_list, "where", original_question_string)
     elif "who" in question_lem_arr and who_ans.items != []:
+        answer_list = "".join(sorted(who_ans.items(), reverse=True)[0][1][0])
         answer_list = find_answer_from_sentence(answer_list, "who", original_question_string)
     elif "how" in question_lem_arr and who_ans.items != []:
         answer_list = find_answer_from_sentence(answer_list, "how", original_question_string)
