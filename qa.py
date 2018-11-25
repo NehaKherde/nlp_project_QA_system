@@ -258,9 +258,9 @@ def whereqs(overlapCount, matches, sentence_details_array):
     # print("NER Match: ", matches)
     return score
 
-def whenqs(overlapCount, matches, sentence_details_array, question_lem_arr, verbmatch):
+def whenqs(overlapCount, matches, sentence_details_array, question_lem_arr, verbmatch, original_question_string):
     score = 0
-    # question_pos = nlp(original_question_string)
+    question = nlp(original_question_string)
     # question_ner_list = []
     # nouns = []
     # root = ""
@@ -282,7 +282,7 @@ def whenqs(overlapCount, matches, sentence_details_array, question_lem_arr, verb
         print("Adding overlap: ", overlapCount*3)
         score += overlapCount*3
     time_words = ['first', 'last', 'since', 'ago']
-    if 'the last' in question_lem_arr:
+    if 'last' in question_lem_arr:
         for word in time_words:
             if word in sentence_details_array[0].sentence[1]:
                 print("Match rul1 + 20")
@@ -295,6 +295,16 @@ def whenqs(overlapCount, matches, sentence_details_array, question_lem_arr, verb
                 print("Match rul2 + 20")
                 score+=20
                 break
+    find_words_in_answer = ['once', 'since', 'from', 'before', 'after', 'as', 'when', 'while', 'on']
+    for word in find_words_in_answer:
+        if word in sentence_details_array[0].sentence[1]:
+            score += 10
+            break
+    for word in question:
+        if word.pos_ == "VERB" and word.is_stop == False:
+            for sent_word in sentence_details_array[0].sentence[1]:
+                if sent_word.lemma == word.lemma_:
+                    score += 20
     return score
 
 def whyqs(sentence_details_array, question_lem_arr, tf_dict, original_question_string):
@@ -333,7 +343,7 @@ def whyqs(sentence_details_array, question_lem_arr, tf_dict, original_question_s
             record[index].score+=6
         if 'want' in record[index].sentence[0]:
             record[index].score+=6
-        if 'so' in record[index].sentence[0] or 'because' in record[index].sentence[0]:
+        if 'so' in record[index].sentence[0] or 'because' in record[index].sentence[0] or 'by' in record[index].sentence[0]:
             record[index].score+=6
         if record[index].score > max_score:
             answer = record[index].sentence[0]
@@ -347,6 +357,10 @@ def whyqs(sentence_details_array, question_lem_arr, tf_dict, original_question_s
         index = answer.index('so')
         return remove_IntersectionFromQuestionAndAnswer(original_question_string, answer[index-1:])
         # return answer[index:]
+    if 'by' in answer:
+        index = answer.index('by')
+        return remove_IntersectionFromQuestionAndAnswer(original_question_string, answer[index-1:])
+
     if 'want' in answer:
         index = answer.index('want')
         return remove_IntersectionFromQuestionAndAnswer(original_question_string, answer[index-1:])
@@ -395,11 +409,14 @@ def whatqs(sentence_details_array, question_lem_arr, original_question_string, t
     question_ners = nlp(original_question_string).ents
     question_pos = nlp(original_question_string)
     question_ner_list = []
-    nouns = []
+    verbs = []
     root = ""
     for each in question_pos:
         if each.dep_ == "ROOT" and each.lemma_ != "be":
             root = each.text
+    for each in question_pos:
+        if each.pos_ == "VERB" and each.lemma_ != "be" and each.is_stop == False:
+            verbs.append(each.lemma_)                            
     if root == "":
         for each in question_pos:
             if each.pos_ == "VERB" and each.lemma_ != "be":
@@ -414,10 +431,13 @@ def whatqs(sentence_details_array, question_lem_arr, original_question_string, t
     answer = None
     max_score = 0
     found_flag = False
+    found_verb = False
+    verb_found = ""
     found_root = ""
     min_index = 0
     for index in range(0,len(sentence_details_array)):
         found_flag = False
+        found_verb = False
         record = sentence_details_array
         record[index].count = 0
         record[index].score = 0
@@ -434,6 +454,14 @@ def whatqs(sentence_details_array, question_lem_arr, original_question_string, t
                 record[index].score +=30
                 found_flag = True
                 found_root = word.word_name
+
+            if verbs and word.lemma in verbs:
+                if word.lemma != root:
+                    record[index].score += 20
+                    found_verb = True 
+                    verb_found = word.word_name
+                    print ( "Verb Match : + 20", word.lemma, found_verb, verb_found)  
+
             # if record[index].count > 0.8:
             #     print ( "Match rul1 : + 3")
             #     record[index].score +=3                    
@@ -446,10 +474,16 @@ def whatqs(sentence_details_array, question_lem_arr, original_question_string, t
         if record[index].score > max_score:
             answer = record[index].sentence[0]
             max_score = record[index].score 
-            if found_flag == True:
+            if found_verb:
+                verb_index = answer.index(verb_found)
+                print("Verb index:", verb_index)
+            if found_flag:
                 min_index = answer.index(found_root)
+            if found_flag and found_verb:
+                min_index = min(min_index, verb_index)
         # print("s:", record[index].sentence[0])
         # print("score:", record[index].score)        
+    print(answer)
     if min_index != 0:
         # print(min_index)
         # if min_index > 20 and (min_index + 50) < len(answer):
@@ -815,7 +849,7 @@ def overlap(question, sentence_details_array, expected_answer_type, rootverb, or
         if "when" in question_lem_arr:
             matches = checkNer(question_lem_arr, nerlist, expected_answer_type)
             print("A:", record.sentence[0])
-            score = whenqs(record.count, matches, sentence_details_array, question_lem_arr, verbmatch)
+            score = whenqs(record.count, matches, sentence_details_array, question_lem_arr, verbmatch, original_question_string)
             if when_ans.get(score):
                 when_ans[score].append(record.sentence[0])
             else:
