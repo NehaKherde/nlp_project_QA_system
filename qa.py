@@ -167,7 +167,8 @@ def matchOrSimilarity(array, word, tf_dict, root):
     # print(word.word_name, word.pos)
     # Check if word in question lemmas array
     # print("s word: ", word.word_name)
-    
+    count = sum(tf_dict.values())
+    maximum_val = max(tf_dict.values())
     if root != "":
         if word.word_name not in [".", ",", "?", "!"] and word.pos == "VERB" and word.stop == False:
             s1 = wordnet.synsets(root)
@@ -177,32 +178,14 @@ def matchOrSimilarity(array, word, tf_dict, root):
                 if len(s2) > 0:
                     syn2 = s2[0]
                     if (syn.wup_similarity(syn2)) != None and (syn.wup_similarity(syn2)) > 0.9:                    
-                        prob+=1
-                # print("Word1:",root)
-                # print("Word2:",word.lemma)
-                # print(syn)
-                # print(syn2)
-                # print("Similarity: ",syn.wup_similarity(syn2))
-            # if s2 and syn != None:
-            
-            #     print(s2[0])
-                # if (syn.wup_similarity(s2[0])) != None and (syn.wup_similarity(s2[0])) > 0.5:
-                #     print(syn)
-                #     # print(s2[0])
-                #     print("Similarity: ",syn.wup_similarity(s2[0]))
-        # print("-------------------------------")            
-        # for syn2 in s2: 
-        #     print(syn2)
-        # print("-------------------------------")
-        
-            # print("Similarity: ",syn.wup_similarity(s2[0]))
+                        # prob+=1
+                        count_word = tf_dict[word.word_name]
+                        prob += 1- (count_word/maximum_val)
 
     for wordobject in array:
         if wordobject == word.lemma:
             # print("Match")
             if word.word_name != "." and word.word_name != "," and word.word_name != "-" and word.word_name != "\"" and word.word_name != "'s" and word.word_name != "'nt" and word.word_name != "...":
-                count = sum(tf_dict.values())
-                maximum_val = max(tf_dict.values())
                 count_word = tf_dict[word.word_name]
                 prob += 1- (count_word/maximum_val)
             # Check if verb
@@ -405,13 +388,13 @@ def whyqs(sentence_details_array, question_lem_arr, tf_dict, original_question_s
     answer = remove_IntersectionFromQuestionAndAnswer(original_question_string, answer)
     return answer
 
-def remove_IntersectionFromQuestionAndAnswer(question, answer):
+def remove_IntersectionFromQuestionAndAnswer(question, orig_answer):
     # s = list(set(answer.split()).difference(set(question.split())))
     # result = (" ".join(x for x in s))
     # return result
     result = ""
     question_list = question.split(' ')
-    answer = answer.split(' ')
+    answer = orig_answer.split(' ')
     for ans_word in answer:
         if ans_word.find('(') != -1:
             ans_word = ans_word.replace('(', '')
@@ -433,12 +416,18 @@ def remove_IntersectionFromQuestionAndAnswer(question, answer):
                     break
         else:
             result = result + ' '+ ans_word
+            l = []
             if "who said" in question.lower() or "who says" in question.lower():
                 new_result = ""
                 result = nlp(result)
                 for token in result:
                     if token.pos_ not in ["PART", "VERB", "SYM", "NUM", "PUNCT", "ADP", "PRON"] and token.dep_ not in ["prep", "poss", "punct", "quantmod", "pobj", "compound", "dobj", "npadvmod", "nummod", "advmod"]:
+                        # l.append(token.text)                       
                         new_result = new_result + token.text + " "
+                # if l != []:
+                #     result = " ".join(x for x in l)
+                # else:
+                #     result = orig_answer
                 result = new_result
     return result
 
@@ -556,7 +545,7 @@ def whatqs(sentence_details_array, question_lem_arr, original_question_string, t
                 answer = remove_IntersectionFromQuestionAndAnswer(original_question_string, answer[min_index:])
         else:
             answer = remove_IntersectionFromQuestionAndAnswer(original_question_string, answer)
-    print(answer)
+    # answer = remove_words(answer)
     return answer
     
         # print(record[index].sentence[0])
@@ -565,6 +554,19 @@ def get_index_of_who(question_arr):
     for i in range(len(question_arr)):
         if question_arr[i].lemma == "who":
             return i
+def remove_unnecessary_words(type, answer_list):
+    pos_list = []
+    new_list = []
+    answer = []
+    sent = nlp(answer_list)
+    if type == "where":
+        pos_list = ["VERB", "ADV", "PUNCT", ""]
+        ner_list = ["DATE", "NORP", "ORDINAL"]
+    for token in sent:
+        if token.pos_ not in pos_list:
+            answer.append(token.text)
+    answer = ' '.join(answer)
+    return answer
 
 def find_answer_from_sentence(answer_list, type, original_question_string):
     answer_substring = ""
@@ -724,6 +726,7 @@ def find_answer_from_sentence(answer_list, type, original_question_string):
             for ner in ner_list:
                 if ner.label_ in question_map["how far"]:
                     answer_substring = answer_substring + ' ' + ner.text
+                    print("HF: ",answer_substring)
 
         elif "how deep" in original_question_string.lower():
             for ner in ner_list:
@@ -800,6 +803,7 @@ def howDoesqs(sentence_details_array, question_lem_arr, tf_dict, original_questi
             max_count = sentence_details_array[index].count
             answer = sentence_details_array[index].sentence[0]
     pass
+    # answer = remove_words(answer)
     return answer
 
 def get_if_who_is_question(original_question_string, sentence_details_array):
@@ -826,6 +830,18 @@ def get_if_who_is_question(original_question_string, sentence_details_array):
     else:
         return False, result
 
+def remove_words(answer_list):
+    answer_list = nlp(answer_list)
+    answer = []
+    for word in answer_list:
+        if word.lemma_ != "say":
+            answer.append(word.text)
+    if answer != []:
+        final_ans = " ".join(x for x in answer)
+    else:
+        final_ans = answer_list
+    return final_ans
+
 def overlap(question, sentence_details_array, expected_answer_type, rootverb, original_question_string, tf_dict):
     question_lem_arr = []
     answer_list = ""
@@ -842,7 +858,7 @@ def overlap(question, sentence_details_array, expected_answer_type, rootverb, or
     best_ans_whose = ""
     verbmatch = False
     is_whoIs = False
-    # print(original_question_string)
+    print(original_question_string)
     if 'why' in question_lem_arr:
         return whyqs(sentence_details_array, question_lem_arr, tf_dict, original_question_string)
     elif 'what' in question_lem_arr:
@@ -896,7 +912,6 @@ def overlap(question, sentence_details_array, expected_answer_type, rootverb, or
                 answer_list = howDoesqs(sentence_details_array, question_lem_arr, tf_dict, original_question_string)
             else:
                 matches = checkNer(question_lem_arr, nerlist, expected_answer_type)
-                # if record.count > 0.5 and matches != 0:
                 if matches != 0:
                     how_score = len(matches)+record.count+(verbMatchCnt*5)
                     if how_ans.get(how_score):
@@ -906,6 +921,7 @@ def overlap(question, sentence_details_array, expected_answer_type, rootverb, or
                 # if 'how' in question_lem_arr and record.count >= 1 and how_ans != {}:
                 if 'how' in question_lem_arr and how_ans != {}:
                     answer_list = "".join(sorted(how_ans.items(), reverse=True)[0][1][0])
+                    # print("Ans:", answer_list)
                     # answer_list = remove_IntersectionFromQuestionAndAnswer(original_question_string, answer_list)
         if "which" in question_lem_arr:
             answer_list = howDoesqs(sentence_details_array, question_lem_arr, tf_dict, original_question_string)
@@ -972,6 +988,7 @@ def overlap(question, sentence_details_array, expected_answer_type, rootverb, or
     elif "where" in question_lem_arr and where_ans.items != []:
         answer_list = "".join(sorted(where_ans.items(), reverse = True)[0][1][0])
         answer_list = find_answer_from_sentence(answer_list, "where", original_question_string)
+        answer_list = remove_unnecessary_words("where", answer_list)
     elif "who" in question_lem_arr and who_ans.items != []:
         if is_whoIs == True:
             answer_list = who_ans[10][0]
@@ -981,6 +998,7 @@ def overlap(question, sentence_details_array, expected_answer_type, rootverb, or
             answer_list = find_answer_from_sentence(answer_list, "who", original_question_string)
             answer_list = remove_IntersectionFromQuestionAndAnswer(original_question_string, answer_list)
     elif "how" in question_lem_arr and who_ans.items != []:
+        print("A:", answer_list)
         answer_list = find_answer_from_sentence(answer_list, "how", original_question_string)
         answer_list = remove_IntersectionFromQuestionAndAnswer(original_question_string, answer_list)
     # elif "how" in question_lem_arr and how_ans != {}:
@@ -991,6 +1009,7 @@ def overlap(question, sentence_details_array, expected_answer_type, rootverb, or
     elif "whose" in question_lem_arr:
         if best_ans_whose!="":
             answer_list = best_ans_whose
+    # answer_list = remove_words(answer_list)
     return answer_list
 
 
