@@ -352,7 +352,7 @@ def whyqs(sentence_details_array, question_lem_arr, tf_dict, original_question_s
             if each.pos_ == "VERB" and each.lemma_ != "be":
                 root = each.lemma_        
                 break
-    # print("Root:", root)
+    print("Root:", root)
     for index in range(0,len(sentence_details_array)):
         record = sentence_details_array
         record[index].score = 0
@@ -381,7 +381,7 @@ def whyqs(sentence_details_array, question_lem_arr, tf_dict, original_question_s
         if record[index].score > max_score:
             answer = record[index].sentence[0]
             max_score = record[index].score    
-    # print("Answer:::::---------------------------------", answer)    
+    print("Answer:::::---------------------------------", answer)    
     if 'because' in answer:
         index = answer.index('because')
         return remove_IntersectionFromQuestionAndAnswer(original_question_string, answer[index-1:])
@@ -398,9 +398,9 @@ def whyqs(sentence_details_array, question_lem_arr, tf_dict, original_question_s
         index = answer.index('want')
         return remove_IntersectionFromQuestionAndAnswer(original_question_string, answer[index-1:])
         # return answer[index:]
-    if root in answer:
-        index = answer.index(root)
-        return remove_IntersectionFromQuestionAndAnswer(original_question_string, answer[index-1:])
+    # if root in answer:
+    #     index = answer.index(root)
+    #     return remove_IntersectionFromQuestionAndAnswer(original_question_string, answer[index-1:])
 
     answer = remove_IntersectionFromQuestionAndAnswer(original_question_string, answer)
     return answer
@@ -433,13 +433,13 @@ def remove_IntersectionFromQuestionAndAnswer(question, answer):
                     break
         else:
             result = result + ' '+ ans_word
-            # if "who said" in question.lower() or "who says" in question.lower():
-            #     new_result = ""
-            #     result = nlp(result)
-            #     for token in result:
-            #         if token.pos_ not in ["PART", "VERB", "SYM", "NUM", "PUNCT", "ADP", "PRON"] and token.dep_ not in ["prep", "poss", "punct", "quantmod", "pobj", "compound", "dobj", "npadvmod", "nummod", "advmod"]:
-            #             new_result = new_result + token.text + " "
-            #     result = new_result
+            if "who said" in question.lower() or "who says" in question.lower():
+                new_result = ""
+                result = nlp(result)
+                for token in result:
+                    if token.pos_ not in ["PART", "VERB", "SYM", "NUM", "PUNCT", "ADP", "PRON"] and token.dep_ not in ["prep", "poss", "punct", "quantmod", "pobj", "compound", "dobj", "npadvmod", "nummod", "advmod"]:
+                        new_result = new_result + token.text + " "
+                result = new_result
     return result
 
 def findNameWhat(answer_string):
@@ -475,9 +475,9 @@ def whatqs(sentence_details_array, question_lem_arr, original_question_string, t
 
     for each in question_ners:
         question_ner_list.append(each.label_)
-    print("Root:", root)
-    print("*************************************")        
-    print(original_question_string)
+    # print("Root:", root)
+    # print("*************************************")        
+    # print(original_question_string)
     answer = None
     max_score = 0
     found_flag = False
@@ -500,7 +500,7 @@ def whatqs(sentence_details_array, question_lem_arr, original_question_string, t
             record[index].score += prob
             # for each_word in record[index].sentence[0]:
             if word.lemma == root:
-                print("Word:", word.word_name)
+                # print("Word:", word.word_name)
                 record[index].score +=30
                 found_flag = True
                 found_root = word.word_name
@@ -526,16 +526,16 @@ def whatqs(sentence_details_array, question_lem_arr, original_question_string, t
             max_score = record[index].score 
             if found_verb:
                 verb_index = answer.index(verb_found)
-                print("Verb index:", verb_index)
+                # print("Verb index:", verb_index)
             if found_flag:
                 min_index = answer.index(found_root)
             if found_flag and found_verb:
                 min_index = min(min_index, verb_index)
-        print("s:", record[index].sentence[0])
-        print("score:", record[index].score)        
+        # print("s:", record[index].sentence[0])
+        # print("score:", record[index].score)        
     print(answer)
     if min_index != 0:
-        # print(min_index)
+        print(min_index)
         # if min_index > 20 and (min_index + 50) < len(answer):
         # # if (min_index + 50) < len(answer):
         #     print("Original: ", answer)
@@ -556,6 +556,7 @@ def whatqs(sentence_details_array, question_lem_arr, original_question_string, t
                 answer = remove_IntersectionFromQuestionAndAnswer(original_question_string, answer[min_index:])
         else:
             answer = remove_IntersectionFromQuestionAndAnswer(original_question_string, answer)
+    print(answer)
     return answer
     
         # print(record[index].sentence[0])
@@ -569,6 +570,7 @@ def find_answer_from_sentence(answer_list, type, original_question_string):
     answer_substring = ""
     sent = nlp(answer_list)
     subject, dobject, idobject, rootverb, question_arr, expected_answer_type = extractpos(original_question_string)
+    print("Q: ",original_question_string)
     # print("Hey")
     # if type == "where":
     #     location_preps = ["in", "at", "near", "inside"]
@@ -763,7 +765,9 @@ def find_answer_from_sentence(answer_list, type, original_question_string):
                 if ner.label_ in question_map["how long"]:
                     answer_substring = answer_substring + ' ' + ner.text
         else:
+            print("Ans: how",answer_substring)
             answer_substring = answer_list
+        print("Ans: how", answer_substring)
         return answer_substring    
 
 # def sentence_similarity(question, probable_ans):
@@ -838,7 +842,7 @@ def overlap(question, sentence_details_array, expected_answer_type, rootverb, or
     best_ans_whose = ""
     verbmatch = False
     is_whoIs = False
-    print(original_question_string)
+    # print(original_question_string)
     if 'why' in question_lem_arr:
         return whyqs(sentence_details_array, question_lem_arr, tf_dict, original_question_string)
     elif 'what' in question_lem_arr:
