@@ -166,7 +166,7 @@ def matchOrSimilarity(array, word, tf_dict, root):
     prob = 0
     # print(word.word_name, word.pos)
     # Check if word in question lemmas array
-    # print("s word: ", word.word_name)
+    # print("s word: ", root)
     count = sum(tf_dict.values())
     maximum_val = max(tf_dict.values())
 
@@ -183,14 +183,18 @@ def matchOrSimilarity(array, word, tf_dict, root):
                 if len(s2) > 0:
                     syn2 = s2[0]
                     # if word.lemma == 'finish' and root == 'end':
+                    #     print(syn.lemma_names())
                     #     print("S:",(syn.wup_similarity(syn2)))
                         # print(syn.name)
                         # print(syn2.name)
                     # for syn2 in s2:    
                     if (syn.wup_similarity(syn2)) != None and (syn.wup_similarity(syn2)) > 0.9:                    
+                    # if word.lemma in syn.lemma_names():
                             # prob+=1
+                        # print("Match found!", word.lemma)
                         count_word = tf_dict[word.word_name]
                         prob += 1- (count_word/maximum_val)
+                        break
 
     for wordobject in array:
         if wordobject == word.lemma:
@@ -942,8 +946,8 @@ def overlap(question, sentence_details_array, expected_answer_type, rootverb, or
             # print("Matches", matches)
             score = whereqs(record.count, matches, sentence_details_array)
             if where_ans.get(score):
-                # print("S:", record.sentence[0])
-                # print("score", score)
+                print("S:", record.sentence[0])
+                print("score", score)
                 where_ans[score].append(record.sentence[0])
             else:
                 # print("S:", record.sentence[0])
