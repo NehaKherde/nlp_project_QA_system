@@ -169,16 +169,26 @@ def matchOrSimilarity(array, word, tf_dict, root):
     # print("s word: ", word.word_name)
     count = sum(tf_dict.values())
     maximum_val = max(tf_dict.values())
+
     if root != "":
         if word.word_name not in [".", ",", "?", "!"] and word.pos == "VERB" and word.stop == False:
             s1 = wordnet.synsets(root)
             s2 = wordnet.synsets(word.lemma)
+            # print("------------------W: ", word.lemma)
+            # if len(s2) > 0:
+            #         syn2 = s2[0]
+            #         print(syn2.name)
             # print("-------------------------------")
             for syn in s1: 
                 if len(s2) > 0:
                     syn2 = s2[0]
+                    # if word.lemma == 'finish' and root == 'end':
+                    #     print("S:",(syn.wup_similarity(syn2)))
+                        # print(syn.name)
+                        # print(syn2.name)
+                    # for syn2 in s2:    
                     if (syn.wup_similarity(syn2)) != None and (syn.wup_similarity(syn2)) > 0.9:                    
-                        # prob+=1
+                            # prob+=1
                         count_word = tf_dict[word.word_name]
                         prob += 1- (count_word/maximum_val)
 
