@@ -475,8 +475,8 @@ def whatqs(sentence_details_array, question_lem_arr, original_question_string, t
 
     for each in question_ners:
         question_ner_list.append(each.label_)
-    # print("Root:", root)
-    # print("*************************************")        
+    print("Root:", root)
+    print("*************************************")        
     print(original_question_string)
     answer = None
     max_score = 0
@@ -500,7 +500,7 @@ def whatqs(sentence_details_array, question_lem_arr, original_question_string, t
             record[index].score += prob
             # for each_word in record[index].sentence[0]:
             if word.lemma == root:
-                # print("Word:", word.word_name)
+                print("Word:", word.word_name)
                 record[index].score +=30
                 found_flag = True
                 found_root = word.word_name
@@ -526,14 +526,14 @@ def whatqs(sentence_details_array, question_lem_arr, original_question_string, t
             max_score = record[index].score 
             if found_verb:
                 verb_index = answer.index(verb_found)
-                # print("Verb index:", verb_index)
+                print("Verb index:", verb_index)
             if found_flag:
                 min_index = answer.index(found_root)
             if found_flag and found_verb:
                 min_index = min(min_index, verb_index)
-        # print("s:", record[index].sentence[0])
-        # print("score:", record[index].score)        
-    # print(answer)
+        print("s:", record[index].sentence[0])
+        print("score:", record[index].score)        
+    print(answer)
     if min_index != 0:
         # print(min_index)
         # if min_index > 20 and (min_index + 50) < len(answer):
@@ -892,7 +892,8 @@ def overlap(question, sentence_details_array, expected_answer_type, rootverb, or
                 answer_list = howDoesqs(sentence_details_array, question_lem_arr, tf_dict, original_question_string)
             else:
                 matches = checkNer(question_lem_arr, nerlist, expected_answer_type)
-                if record.count > 0.5 and matches != 0:
+                # if record.count > 0.5 and matches != 0:
+                if matches != 0:
                     how_score = len(matches)+record.count+(verbMatchCnt*5)
                     if how_ans.get(how_score):
                         how_ans[how_score].append(record.sentence[0])
@@ -977,6 +978,7 @@ def overlap(question, sentence_details_array, expected_answer_type, rootverb, or
             answer_list = remove_IntersectionFromQuestionAndAnswer(original_question_string, answer_list)
     elif "how" in question_lem_arr and who_ans.items != []:
         answer_list = find_answer_from_sentence(answer_list, "how", original_question_string)
+        answer_list = remove_IntersectionFromQuestionAndAnswer(original_question_string, answer_list)
     # elif "how" in question_lem_arr and how_ans != {}:
     #     answer_list = "".join(sorted(where_ans.items(), reverse=True)[0][1][0])
     elif "whom" in question_lem_arr:
