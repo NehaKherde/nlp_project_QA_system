@@ -408,6 +408,7 @@ def whyqs(sentence_details_array, question_lem_arr, tf_dict, original_question_s
     #     return remove_IntersectionFromQuestionAndAnswer(original_question_string, answer[index-1:])
 
     answer = remove_IntersectionFromQuestionAndAnswer(original_question_string, answer)
+    answer = remove_say_from_answer(answer)
     return answer
 
 def remove_IntersectionFromQuestionAndAnswer(question, orig_answer):
@@ -468,8 +469,8 @@ def findNameWhat(answer_string):
    
 
 def whatqs(sentence_details_array, question_lem_arr, original_question_string, tf_dict):
-    print("----------------------------------------------------------------------------------")
-    print("Q:",original_question_string)
+    # print("----------------------------------------------------------------------------------")
+    # print("Q:",original_question_string)
     question_ners = nlp(original_question_string).ents
     question_pos = nlp(original_question_string)
     question_ner_list = []
@@ -489,8 +490,8 @@ def whatqs(sentence_details_array, question_lem_arr, original_question_string, t
 
     for each in question_ners:
         question_ner_list.append(each.label_)
-    print("Root:", root)
-    print("*************************************")        
+    # print("Root:", root)
+    # print("*************************************")        
     # print(original_question_string)
     answer = None
     max_score = 0
@@ -554,13 +555,19 @@ def whatqs(sentence_details_array, question_lem_arr, original_question_string, t
             if found_flag and found_verb:
                 min_index = min(min_index, verb_index)
                 # print("mi:", min_index)
+            if not found_verb and not found_flag:
+                min_index = 0
         # print("s:", record[index].sentence[0])
         # print("score:", record[index].score)  
     orig = answer      
-    print("Bef intersection:",answer)
+    # print("Bef intersection:",answer)
     if min_index != 0:
         
-        print("Min: ",min_index)
+        maxin = len(answer)*0.7
+        if min_index > maxin:
+        # if len(answer) - min_index < 30:
+            min_index = 0
+        # print("Min: ",min_index)
         # if min_index > 20 and (min_index + 50) < len(answer):
         # # if (min_index + 50) < len(answer):
         #     print("Original: ", answer)
@@ -572,8 +579,11 @@ def whatqs(sentence_details_array, question_lem_arr, original_question_string, t
             answer = findNameWhat(answer)
             if answer != "":
                 answer = remove_IntersectionFromQuestionAndAnswer(original_question_string, answer[min_index:])
+                # if len(answer.split())
+            else:
+                answer = orig
         else:    
-            # print(answer[min_index:])
+            # print("Before intersection",answer[min_index:])
             answer = remove_IntersectionFromQuestionAndAnswer(original_question_string, answer[min_index:])
     else:   
         
@@ -584,7 +594,8 @@ def whatqs(sentence_details_array, question_lem_arr, original_question_string, t
         else:
             answer = remove_IntersectionFromQuestionAndAnswer(original_question_string, answer)
     # answer = remove_words(answer)
-    print("Ans:", answer)
+    # print("Ans:", answer)
+    answer = remove_say_from_answer(answer)
     return answer
     
         # print(record[index].sentence[0])
@@ -606,6 +617,13 @@ def remove_unnecessary_words(type, answer_list):
             answer.append(token.text)
     answer = ' '.join(answer)
     return answer
+
+def remove_say_from_answer(answer_list):
+    if "said" in answer_list:
+        answer_list = answer_list.replace("said", "")
+    if "says" in answer_list:
+        answer_list = answer_list.replace("says", "")
+    return answer_list
 
 def find_answer_from_sentence(answer_list, type, original_question_string):
     answer_substring = ""
@@ -843,6 +861,7 @@ def howDoesqs(sentence_details_array, question_lem_arr, tf_dict, original_questi
             answer = sentence_details_array[index].sentence[0]
     pass
     # answer = remove_words(answer)
+    answer = remove_say_from_answer(answer)
     return answer
 
 def get_if_who_is_question(original_question_string, sentence_details_array):
@@ -1050,6 +1069,7 @@ def overlap(question, sentence_details_array, expected_answer_type, rootverb, or
         if best_ans_whose!="":
             answer_list = best_ans_whose
     # answer_list = remove_words(answer_list)
+    answer_list = remove_say_from_answer(answer_list)
     return answer_list
 
 
